@@ -37,6 +37,7 @@ Follow these steps:
 - Commit your changes to the new branch.
 - Send a pull request.
 
+- drop a mail to me for database file at debajyotiguha11@gmail.com
 ## Authors
 
 ***[Debjyoti Guha](https://github.com/debajyotiguha11/)***
