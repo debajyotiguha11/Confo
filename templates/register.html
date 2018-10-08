@@ -1,0 +1,64 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+</head>
+<title>User Register</title>
+<body>
+{% block body %}
+{% if session['logged_in'] %}
+<p>You're logged in already!</p>
+{% else %}
+ {%with messages = get_flashed_messages()%}
+
+    {%if messages%}
+
+    {% for message in messages %}
+
+        <center><font color="red">{{message}}</font> </center>
+
+    </div>
+
+
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+{% endif %}
+{% endblock %}
+</body>
+<form action="/userregister" method="POST">
+	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>User Register</h1>
+			</div>
+
+			<div class="login-form">
+				<div class="control-group">
+				<input type="text" class="login-field" value="" placeholder="username" name="username" required>
+				<label class="login-field-icon fui-user" for="login-name"></label>
+				</div>
+
+				<div class="control-group">
+				<input type="password" class="login-field" value="" placeholder="password" name="password" required>
+				<label class="login-field-icon fui-lock" for="login-pass"></label>
+				</div>
+
+        <div class="control-group">
+				<input type="email" class="login-field" value="" placeholder="email" name="email" required>
+				<label class="login-field-icon fui-user" for="login-name"></label>
+				</div>
+
+        <div class="control-group">
+				<input type="text" class="login-field" value="" placeholder="phone no" name="phone" required>
+				<label class="login-field-icon fui-user" for="login-name"></label>
+				</div>
+
+                <input type="submit" value="Register" class="btn btn-primary btn-large btn-block" ><br>
+                <button type="button" class="btn btn-primary btn-large btn-block" onclick="window.location.href='{{ url_for( 'dash1' ) }}';">I am an Admin</button>
+			    <br>
+			</div>
+		</div>
+	</div>
+</form>
+</body>
+</html>

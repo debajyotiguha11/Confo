@@ -1,0 +1,158 @@
+{% include 'admin/header.html' %}
+{% block body %}
+    <main>
+    <section class="content">
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Apply for seminar </h1></div>
+      <div class="container">
+        <h3>New Application</h3>
+        <br>
+          <form action="{{ url_for('insert') }}" method="POST">
+
+
+             <div class="form-group">
+
+
+                <label>Name</label>
+
+                <input type="text" class="form-control" name="name" value="{{session.username}}" disabled>
+
+
+             </div>
+
+
+
+             <div class="form-group">
+
+
+                <label>Date From</label>
+
+                <input type="datetime-local" placeholder="2018-09-01 14:45:00" name="datef" required>
+
+
+             </div>
+
+
+             <div class="form-group">
+
+
+                <label>Date To</label>
+
+                <input type="datetime-local" placeholder="2018-09-02 14:45:00" name="datet" required>
+
+
+             </div>
+
+
+
+             <div class="form-group">
+
+
+                <label>Email</label>
+
+                <input type="text" class="form-control" name="email" value="{{session.email}}" disabled>
+
+
+             </div>
+
+
+             <div class="form-group">
+
+
+                <label>Phone</label>
+
+                <input type="text" class="form-control" name="phone" value="{{session.phone}}" disabled>
+
+
+             </div>
+
+
+             <div class="row">
+                 <label>Hall</label>
+              <p>
+                <input type="checkbox" name="hall" value="Seminar Hall 1" id="1"/>
+                <label for="1">Seminar Hall 1</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Seminar Hall 2" id="2"/>
+                <label for="2">Seminar Hall 2</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Seminar Hall 3" id="3"/>
+                <label for="3">Seminar Hall 3</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Seminar Hall 4" id="4"/>
+                <label for="4">Seminar Hall 4</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Seminar Hall 5" id="5"/>
+                <label for="5">Seminar Hall 5</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Seminar Hall 6" id="6"/>
+                <label for="6">Seminar Hall 6</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Rajlaxmi Seminar Hall" id="7"/>
+                <label for="7">Rajlaxmi Seminar Hall</label>
+              </p>
+              <p>
+                <input type="checkbox" name="hall" value="Auditorium" id="8"/>
+                <label for="8">Auditorium</label>
+              </p>
+            </div>
+
+
+
+
+             <div class="form-group">
+
+
+                <label>Purpose</label>
+
+                <input type="text" class="form-control" name="comment" required>
+
+
+             </div>
+
+
+
+             <div class="form-group">
+
+
+                <button class="btn btn-primary" type="sbumit">Apply</button>
+
+
+             </div>
+
+
+          </form>
+    </section>
+    </main>
+{% endblock %}
+        <!-- So this is basically a hack, until I come up with a better solution. autocomplete is overridden
+        in the materialize js file & I don't want that.
+        -->
+        <!-- Yo dawg, I heard you like hacks. So I hacked your hack. (moved the sidenav js up so it actually works) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script>
+        // Hide sideNav
+        $('.button-collapse').sideNav({
+        menuWidth: 300, // Default is 300
+        edge: 'left', // Choose the horizontal origin
+        closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          draggable: true // Choose whether you can drag to open on touch screens
+          });
+          $(document).ready(function(){
+          $('.tooltipped').tooltip({delay: 50});
+          });
+          $('select').material_select();
+          $('.collapsible').collapsible();
+          </script>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+
+        <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+        {% include 'admin/footer.html' %}

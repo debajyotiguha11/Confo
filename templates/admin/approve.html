@@ -1,0 +1,86 @@
+{% include 'admin/header.html' %}
+{% block body %}
+    <main>
+    <section class="content">
+
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Need Approvals </h1></div>
+      <div id="posttable" class="container">
+        <table class="responsive-table striped hover centered" id="names-table">
+          <thead>
+            <tr>
+              <th>Username:</th>
+              <th>Date Requested:</th>
+                <th>Date Till:</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Hall</th>
+              <th>Comment</th>
+              <th>Actions:</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in applications %}
+                <tr>
+                    <td>{{row.1}}</td>
+                    <td>{{row.2}}</td>
+                    <td>{{row.3}}</td>
+                    <td>{{row.4}}</td>
+                    <td>{{row.5}}</td>
+                    <td>{{row.6}}</td>
+                    <td>{{row.7}}</td>
+                    {% if row[8] == 0 %}
+                    <td>
+                <div class="btn-toolbar">
+                  <a href="/accept">
+
+                      <a href="/accept/{{ row.0 }}" class="btn green" name="done" onclick="return confirm('Are You Sure For Accept?')"><i class="material-icons">done</i></a>
+
+                    </button>
+                  </a>
+                  <a href="/reject">
+                    <a href="/reject/{{ row.0 }}" class="btn red" name="remove" onclick="return confirm('Are You Sure For Reject?')"><i class="material-icons">remove</i></a>
+
+                    </button>
+                  </a>
+                </div>
+              </td>
+                    {% elif row[8] == 1 %}
+                    <td><i class="text-red material-icons">check</i></td>
+		                  {% elif row[8] == 2 %}
+                    <td><i class="text-red material-icons">close</i></td>
+                    {% endif %}
+                </tr>
+                  {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+  </main>
+{% endblock %}
+        <!-- So this is basically a hack, until I come up with a better solution. autocomplete is overridden
+        in the materialize js file & I don't want that.
+        -->
+        <!-- Yo dawg, I heard you like hacks. So I hacked your hack. (moved the sidenav js up so it actually works) -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script>
+        // Hide sideNav
+        $('.button-collapse').sideNav({
+        menuWidth: 300, // Default is 300
+        edge: 'left', // Choose the horizontal origin
+        closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          draggable: true // Choose whether you can drag to open on touch screens
+          });
+          $(document).ready(function(){
+          $('.tooltipped').tooltip({delay: 50});
+          });
+          $('select').material_select();
+          $('.collapsible').collapsible();
+          </script>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+
+        <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+        {% include 'admin/footer.html' %}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Greetings {{session.username}}</title>
+    <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+  </head>
+
+  <body>
+    <ul id="slide-out" class="side-nav fixed z-depth-4">
+      <li>
+        <div class="userView">
+          <div class="background">
+            <img src="/static/img/photo1.png">
+          </div>
+          <a href="#!user"><img class="circle" src="/static/img/avatar04.png"></a>
+          <a href="#!name"><span class="white-text name">Welcome back {{ session.username }}</span></a><br>
+        </div>
+      </li>
+
+      <li><a class="active" href="/index"><i class="material-icons pink-item">dashboard</i>Dashboard</a></li>
+      <li><div class="divider"></div></li>
+
+      <li><a class="subheader">Management</a></li>
+        <li><a href="/edituser">Update Profile<i class="material-icons pink-item">person</i></a></li>
+        <li><a href="/apply"><i class="material-icons pink-item">note_add</i>New Applications</a></li>
+        <li><a href="/viewannoun"><i class="material-icons pink-item">announcement</i>Announcements</a></li>
+<center><button type="button" onclick="window.location.href='{{ url_for( 'logout' ) }}';" class="waves-effect waves-teal btn-flat"><i class="material-icons right red-text">power_settings_new</i></button></center>
+    </ul>

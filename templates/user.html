@@ -1,0 +1,55 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+</head>
+<title>User Login</title>
+<body>
+{% block body %}
+{% if session['logged_in'] %}
+<p>You're logged in already!</p>
+{% else %}
+ {%with messages = get_flashed_messages()%}
+
+    {%if messages%}
+
+    {% for message in messages %}
+
+        <center><font color="white">{{message}}</font> </center>
+
+    </div>
+
+
+    {%endfor%}
+    {%endif%}
+    {%endwith%}
+{% endif %}
+{% endblock %}
+</body>
+<form action="/userlogin" method="POST">
+	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>User Login</h1>
+			</div>
+
+			<div class="login-form">
+				<div class="control-group">
+				<input type="text" class="login-field" value="" placeholder="username" name="username" required>
+				<label class="login-field-icon fui-user" for="login-name"></label>
+				</div>
+
+				<div class="control-group">
+				<input type="password" class="login-field" value="" placeholder="password" name="password" required>
+				<label class="login-field-icon fui-lock" for="login-pass"></label>
+				</div>
+
+                <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" ><br>
+                <button type="button" class="btn btn-primary btn-large btn-block" onclick="window.location.href='{{ url_for( 'dash2' ) }}';">Register</button><br>
+                <button type="button" class="btn btn-primary btn-large btn-block" onclick="window.location.href='{{ url_for( 'dash1' ) }}';">I am an Admin</button>
+			    <br>
+			</div>
+		</div>
+	</div>
+</form>
+</body>
+</html>

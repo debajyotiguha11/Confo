@@ -1,0 +1,21 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+</head>
+<title>Select Login</title>
+<body>
+	<div class="login">
+		<div class="login-screen">
+			<div class="app-title">
+				<h1>Who You Are?</h1>
+			</div>
+
+			<div class="login-form">
+                <button type="button" class="btn btn-primary btn-large btn-block" onclick="window.location.href='{{ url_for( 'dash1' ) }}';">I am an Admin</button>
+			    <br>
+                <button type="button" class="btn btn-primary btn-large btn-block" onclick="window.location.href='{{ url_for( 'dash') }}';">I am an User</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
