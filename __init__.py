@@ -10,8 +10,13 @@ import pymysql
 app = Flask(__name__)
 app.secret_key = 'many random bytes'
 
-db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
-cur = db.cursor()
+try:
+    db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
+    cur = db.cursor()
+
+except:
+    print("!---- YOUR SERVER IS NOT RUNNING ----!")
+    exit(0)
 
 
 @app.route('/')
@@ -30,6 +35,7 @@ def dash1():
 @app.route('/user')
 def dash():
     return render_template('user.html')
+
 
 @app.route('/register')
 def dash2():
@@ -67,8 +73,9 @@ def announce():
             sub = request.form['sub']
             date = request.form['date']
             active = 1
-            cur.execute("INSERT INTO announcements (sub, txt, date, active) VALUES ( %s, %s, %s, %s)", (sub, text, date, active))
-            #flash("Data Inserted Successfully")
+            cur.execute("INSERT INTO announcements (sub, txt, date, active) VALUES ( %s, %s, %s, %s)",
+                        (sub, text, date, active))
+            # flash("Data Inserted Successfully")
             db.commit()
             return redirect(url_for('viewannoun'))
 
@@ -77,7 +84,7 @@ def announce():
 def removeann(id_data):
     if not session.get('logged_in'):
         return render_template('choose.html')
-    #flash("Record Has Been Deleted Successfully")
+    # flash("Record Has Been Deleted Successfully")
     cur.execute("DELETE FROM announcements WHERE id=%s", (id_data,))
     db.commit()
     return redirect(url_for('viewannoun'))
@@ -125,7 +132,7 @@ def apply():
 def accept(id_data):
     if not session.get('logged_in'):
         return render_template('choose.html')
-    #flash("Approved")
+    # flash("Approved")
     cur.execute("UPDATE applications SET accepted=1 WHERE id=%s", (id_data,))
     db.commit()
     return redirect(url_for('approve'))
@@ -135,7 +142,7 @@ def accept(id_data):
 def reject(id_data):
     if not session.get('logged_in'):
         return render_template('choose.html')
-    #flash("Rejected")
+    # flash("Rejected")
     cur.execute("UPDATE applications SET accepted=2 WHERE id=%s", (id_data,))
     db.commit()
     return redirect(url_for('approve'))
@@ -188,7 +195,8 @@ def userregister():
         password = request.form['password']
         email = request.form['email']
         phone = request.form['phone']
-        cur.execute("INSERT INTO users ( username, password, email, phone) VALUES (%s, %s, %s, %s)", (name, password, email, phone))
+        cur.execute("INSERT INTO users ( username, password, email, phone) VALUES (%s, %s, %s, %s)",
+                    (name, password, email, phone))
         flash(" user Registered Successfully")
         db.commit()
         return redirect(url_for('dash'))
@@ -224,8 +232,10 @@ def insert():
         list = request.form.getlist('hall')
         hall = ", ".join(str(x) for x in list)
         comment = request.form['comment']
-        cur.execute("INSERT INTO applications (userid, name, datef, datet, email, phone, hall, comment) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (session['id'], session['username'], datef, datet, session['email'], session['phone'], hall, comment))
-        #flash("Data Inserted Successfully")
+        cur.execute(
+            "INSERT INTO applications (userid, name, datef, datet, email, phone, hall, comment) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+            (session['id'], session['username'], datef, datet, session['email'], session['phone'], hall, comment))
+        # flash("Data Inserted Successfully")
         db.commit()
         return redirect(url_for('index'))
 
@@ -234,7 +244,7 @@ def insert():
 def delete(id_data):
     if not session.get('logged_in'):
         return render_template('choose.html')
-    #flash("Record Has Been Deleted Successfully")
+    # flash("Record Has Been Deleted Successfully")
     cur.execute("DELETE FROM applications WHERE id=%s", (id_data,))
     db.commit()
     return redirect(url_for('index'))
@@ -263,7 +273,7 @@ def updateaccount():
             SET  password=%s, email=%s, phone=%s
             WHERE id=%s
             """, (password, email, phone, id_data))
-        #flash("Data Updated Successfully")
+        # flash("Data Updated Successfully")
         db.commit()
         session['logged_in'] = False
         return redirect(url_for('index'))
@@ -287,7 +297,7 @@ def update():
                SET datef=%s, datet=%s, hall=%s, comment=%s
                WHERE id=%s
             """, (datef, datet, hall, comment, id_data))
-        #flash("Data Updated Successfully")
+        # flash("Data Updated Successfully")
         db.commit()
         return redirect(url_for('index'))
 
