@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = 'many random bytes'
 
 try:
-    db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
+    db = pymysql.connect(host="ec2-23-23-153-145.compute-1.amazonaws.com", user="ctzogzrvzwhlgi", passwd="efbe3186a9b55ca3cd401ac50f2cfca67fdbdf6a1f6703c7f6035d4a32b434a3", db="d44o6mpmnpunhd")
     cur = db.cursor()
 
 except:
