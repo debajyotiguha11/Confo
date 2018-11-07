@@ -21,24 +21,24 @@
           <tbody>
             {% for row in applications %}
                 <tr>
+                    <td>{{row.0}}</td>
                     <td>{{row.1}}</td>
                     <td>{{row.2}}</td>
                     <td>{{row.3}}</td>
                     <td>{{row.4}}</td>
                     <td>{{row.5}}</td>
                     <td>{{row.6}}</td>
-                    <td>{{row.7}}</td>
-                    {% if row[8] == 0 %}
+                    {% if row[7] == 0 %}
                     <td>
                 <div class="btn-toolbar">
                   <a href="/accept">
 
-                      <a href="/accept/{{ row.0 }}" class="btn green" name="done" onclick="return confirm('Are You Sure For Accept?')"><i class="material-icons">done</i></a>
+                      <a href="/accept/{{ row.8 }}" class="btn green" name="done" onclick="return confirm('Are You Sure For Accept?')"><i class="material-icons">done</i></a>
 
                     </button>
                   </a>
                   <a href="/reject">
-                    <a href="/reject/{{ row.0 }}" class="btn red" name="remove" onclick="return confirm('Are You Sure For Reject?')"><i class="material-icons">remove</i></a>
+                    <a href="/reject/{{ row.8 }}" class="btn red" name="remove" onclick="return confirm('Are You Sure For Reject?')"><i class="material-icons">remove</i></a>
 
                     </button>
                   </a>

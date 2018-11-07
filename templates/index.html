@@ -1,0 +1,108 @@
+<html>
+<head>
+    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+</head>
+<title>Welcome To CONFO</title>
+<body>
+<div ng-app="bootstrpConf">
+  <nav class="top-nav m-b-3 p-t-1 animated fadeInDown clearfix">
+    <div class="container">
+      <ul class="list-unstyled list-inline">
+        <li class="list-inline-item m-r-1"><a href="#" class="js-scroll" data-scroll-to="#home">Home</a></li>
+
+        <li class="list-inline-item m-r-1"><a href="#" class="js-scroll" data-scroll-to="#speakers">Services</a></li>
+        <li class="list-inline-item m-r-1"><a href="#" class="js-scroll" data-scroll-to="#locations">Locations</a></li>
+        <li class="list-inline-item m-r-1"><a href="#" class="js-scroll" data-scroll-to="#topics">Topics</a></li>
+        <li class="list-inline-item m-r-0"><a href="/user" class="btn signup-btn btn-danger btn-sm">Book Now</a></li>
+	<li class="list-inline-item m-r-0"><a href="/admin" class="btn signup-btn btn-sm">Admin</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- jumbotron -->
+  <header id="home" class="top-hero jumbotron-fluid p-b-3 bg-faded">
+    <div class="container animated fadeInUp">
+      <h1 class="display-3">Welcome TO Confo</h1>
+      <p class="lead m-t-1">A new way of reservation</p>
+      <p class="lead m-t-1 m-b-2">Book Halls from Anywhere Anytime, whether you've got a conference or a small meetup CONFO if always there for you :)</p>
+      <button type="button" class="btn btn-lg btn-danger m-t-1" onclick="window.location.href='{{ url_for( 'dash' ) }}';">Book Now</button>
+      <button type="button" class="js-scroll btn btn-lg btn-default m-t-1" data-scroll-to="#speakers">Learn More</button>
+    </div>
+  </header>
+
+  <section id="speakers" class="banner speakers p-y-3">
+    <div class="wrapper">
+      <h2 class="m-b-2 display-5 text-uppercase">Learn More about our services</h2>
+      <a href="#" class="btn btn-primary btn-lg btn-block" data-toggle="modal" data-target="#speakers_modal">Show me</a>
+    </div>
+  </section>
+  <section id="topics" class="banner learn p-y-3">
+    <div class="wrapper">
+      <h2 class="m-b-2 display-5 text-uppercase">Learn Industry Practices</h2>
+      <a href="#" class="btn btn-danger btn-lg btn-block">Topics</a>
+    </div>
+  </section>
+  <div id="locations" class="banner signup p-y-3">
+    <div class="wrapper">
+      <h2 class="m-b-2 display-5 text-uppercase">Don't Miss Out</h2>
+      <a href="#" class="btn btn-primary btn-lg btn-block" onclick="window.location.href='{{ url_for( 'dash' ) }}';">Reserve Now</a>
+    </div>
+  </div>
+  <footer class="p-y-2">
+    <p class="copyright"><span id="copyright-year">2016</span> Debjyoti Guha, All Rights Reserved</p>
+  </footer>
+</div>
+<script>
+function stickyNav() {
+  
+  const topNav = document.querySelector('.top-nav'),
+        topNavOffsetTop = topNav.offsetTop,
+        topNavOffsetHeight = topNav.offsetHeight,
+        offsetPoint = document.querySelector('.top-hero').offsetHeight;
+  
+  
+  window.addEventListener('scroll', function () {
+    
+    let windowOffset = this.pageYOffset;
+    
+    if (windowOffset >= offsetPoint) {
+      topNav.classList.add('sticky');
+    } else {
+      topNav.classList.remove('sticky');
+    }
+  
+    
+    
+  });
+  
+  
+  
+}
+
+
+function setCopyrightYear($selector) {
+  var d = new Date();
+  
+  
+  $selector.text(d.getFullYear());
+}
+
+$('.js-scroll').on('click', function(event) {
+  event.preventDefault();
+  var target = $(this).data('scrollTo');
+  $('html, body').animate({
+    scrollTop: $(target).offset().top
+  }, 400);
+});
+
+setCopyrightYear($('#copyright-year'));
+
+stickyNav();
+
+</script>
+</body>
+</html>

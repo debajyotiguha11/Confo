@@ -1,12 +1,13 @@
 {% include 'user/header.html' %}
 {% block body %}
-  <main>
-  <section class="content">
-    <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Apply for a hall </h1></div>
-    <div class="container">
-      <h3>New Application</h3>
-      <br>
-        <form action="{{ url_for('insert') }}" method="POST">
+<main>
+    <section class="content">
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Feedback </h1></div>
+<div class="container">
+      <h3>We <i class="material-icons pink-item">favorite</i> your Feedbacks</h3>
+
+<br>
+        <form action="{{ url_for('submit') }}" method="POST">
 
 
            <div class="form-group">
@@ -24,43 +25,9 @@
            <div class="form-group">
 
 
-              <label>Date From</label>
+              <label>Date</label>
 
               <input type="date" placeholder="2018-09-01" name="datef" required>
-
-
-           </div>
-
-
-           <div class="form-group">
-
-
-              <label>Date To</label>
-
-              <input type="date" placeholder="2018-09-02" name="datet" required>
-
-
-           </div>
-
-
-
-           <div class="form-group">
-
-
-              <label>Email</label>
-
-              <input type="text" class="form-control" name="email" value="{{session.email}}" disabled>
-
-
-           </div>
-
-
-           <div class="form-group">
-
-
-              <label>Phone</label>
-
-              <input type="text" class="form-control" name="phone" value="{{session.phone}}" disabled>
 
 
            </div>
@@ -107,37 +74,50 @@
           </div>
 
 
-
-
            <div class="form-group">
 
 
-              <label>Purpose</label>
+              <label>Email</label>
 
-              <input type="text" class="form-control" name="comment" required>
+              <input type="text" class="form-control" name="email" value="{{session.email}}" disabled>
 
 
            </div>
 
 
-
            <div class="form-group">
 
 
-              <button class="btn btn-primary" type="sbumit">Apply</button>
+              <label>Phone</label>
+
+              <input type="text" class="form-control" name="phone" value="{{session.phone}}" disabled>
+
+
+           </div>
+
+	<div class="form-group">
+
+
+              <label>Feedback</label>
+
+              <input type="text" class="form-control" name="feedback" required>
+
+
+           </div>
+
+	<div class="form-group">
+
+
+              <button class="btn btn-primary" type="sbumit">Submit</button>
 
 
            </div>
 
 
         </form>
-  </section>
+</section>
   </main>
 
-        <!-- So this is basically a hack, until I come up with a better solution. autocomplete is overridden
-        in the materialize js file & I don't want that.
-        -->
-        <!-- Yo dawg, I heard you like hacks. So I hacked your hack. (moved the sidenav js up so it actually works) -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
         <script>
@@ -162,3 +142,6 @@
 
   {% endblock %}
 {% include 'user/footer.html' %}
+
+
+

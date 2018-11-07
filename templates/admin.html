@@ -1,7 +1,8 @@
 <html>
 <head>
-    <link rel="stylesheet" href="/static/css/style.css" type="text/css">
+    <link rel="stylesheet" href="/static/css/style1.css" type="text/css">
 </head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Admin Login</title>
 <body>
 {% block body %}
@@ -43,8 +44,9 @@
 				<label class="login-field-icon fui-lock" for="login-pass"></label>
 				</div>
 
-                <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" > <br>
-                <button type="button" class="btn btn-primary btn-large btn-block" onclick="window.location.href='{{ url_for( 'dash' ) }}';">I am an User</button>
+                <input type="submit" value="Log in" class="btn btn-primary btn-large btn-block" ><br>
+<a href = "index"><i class="fa fa-chevron-left" aria-hidden="true"></i>
+</a>
 			    <br>
 			</div>
 		</div>

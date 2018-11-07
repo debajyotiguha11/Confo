@@ -1,0 +1,96 @@
+{% include 'user/header.html' %}
+{% block body %}
+<main>
+    <section class="content">
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Search Halls </h1></div>
+<div class="container">
+      <h3>New Search</h3>
+      <br>
+        <form action="{{ url_for('result') }}" method="POST">
+
+
+          <div class="row" >
+               <label>For How Many People</label>
+            <p>
+              <input type="radio" name="hall" value="50" id="1"/>
+              <label for="1">>50</label>
+            </p>
+            <p>
+              <input type="radio" name="hall" value="100" id="2"/>
+              <label for="2">>100</label>
+            </p>
+	    <p>
+              <input type="radio" name="hall" value="500" id="3"/>
+              <label for="3">>500</label>
+            </p>
+	    <p>
+              <input type="radio" name="hall" value="1000" id="4"/>
+              <label for="4">>1000</label>
+            </p>
+          </div>
+
+
+
+           <div class="form-group">
+
+
+              <label>Date From</label>
+
+              <input type="date" placeholder="2018-09-01" name="datef" required>
+
+
+           </div>
+
+
+           <div class="form-group">
+
+
+              <label>Date To</label>
+
+              <input type="date" placeholder="2018-09-02" name="datet" required>
+
+
+           </div>
+
+
+
+           <div class="form-group">
+
+
+              <button class="btn btn-primary" type="sbumit">Search</button>
+
+
+           </div>
+
+
+        </form>
+  </section>
+  </main>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script>
+        // Hide sideNav
+        $('.button-collapse').sideNav({
+        menuWidth: 300, // Default is 300
+        edge: 'left', // Choose the horizontal origin
+        closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          draggable: true // Choose whether you can drag to open on touch screens
+          });
+          $(document).ready(function(){
+          $('.tooltipped').tooltip({delay: 50});
+          });
+          $('select').material_select();
+          $('.collapsible').collapsible();
+          </script>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+
+        <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+
+  {% endblock %}
+{% include 'user/footer.html' %}
+
+
+

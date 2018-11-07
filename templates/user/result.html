@@ -1,63 +1,31 @@
-{% include 'admin/header.html' %}
+{% include 'user/header.html' %}
 {% block body %}
-    <main>
+<main>
     <section class="content">
-      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Dashboard </h1></div>
-
-                <h3 class="center-align">Current Applications</h3>
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Search Results </h1></div>
+<h3 class="center-align">Search Results</h3>
                 <div class="custom-responsive">
                   <table class="striped hover centered">
                     <thead><tr>
-                      <th>Username</th>
-                        <th>Date Requested</th>
-                      <th>Email</th>
-                      <th>Hall</th>
-                      <th>Comments</th>
-                      <th>Accepted?</th>
-                      <th>Action</th>
+                      <th>Hall Name</th>
+                        <th>Facility</th>
+                      <th>Capacity</th>
+                      <th>Description</th>
+		      <th>Book</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {% for row in applications %}
+		<tbody>
+                    {% for row in result %}
                 <tr>
                     <td>{{row.0}}</td>
                     <td>{{row.1}}</td>
                     <td>{{row.2}}</td>
                     <td>{{row.3}}</td>
-                    <td>{{row.4}}</td>
-        {% if row[5] == 0 %}
-        <td><i class="text-green material-icons">maximize</i></td>
-                    {% elif row[5] == 1 %}
-                    <td><i class="text-green material-icons">check</i></td>
-                    {% else %}
-                    <td><i class="text-red material-icons">close</i></td>
-                    {% endif %}
-                    <td>
-
-                <a href="/delete/{{ row.6 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
-
-                    </td>
-                </tr>
-               
-
-
-         <div class="modal-footer">
-
-
-            
-
-
-         </div>
-
-
-      </div>
-
-
-   </div>
-
-
-</div>
-                  {% endfor %}
+		    <td>
+			<a href="/apply" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For proceed?')">Book</a>
+			</td>
+		</tr>
+{% endfor %}
                   </tbody>
                 </table>
               </div>

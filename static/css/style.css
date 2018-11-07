@@ -1,78 +1,149 @@
-* {
-box-sizing: border-box;
+html {
+  font-size: 14px;
 }
 
-*:focus {
-	outline: none;
-}
-body {
-font-family: Arial;
-background-color: #3498DB;
-padding: 50px;
-}
-.login {
-margin: 20px auto;
-width: 300px;
-}
-.login-screen {
-background-color: #FFF;
-padding: 20px;
-border-radius: 5px
-}
-
-.app-title {
-text-align: center;
-color: #777;
-}
-
-.login-form {
-text-align: center;
-}
-.control-group {
-margin-bottom: 10px;
-}
-
-input {
-text-align: center;
-background-color: #ECF0F1;
-border: 2px solid transparent;
-border-radius: 3px;
-font-size: 16px;
-font-weight: 200;
-padding: 10px 0;
-width: 250px;
-transition: border .5s;
-}
-
-input:focus {
-border: 2px solid #3498DB;
-box-shadow: none;
+.animated {
+  animation-duration: 500ms;
 }
 
 .btn {
-  border: 2px solid transparent;
-  background: #3498DB;
-  color: #ffffff;
-  font-size: 16px;
-  line-height: 25px;
-  padding: 10px 0;
+  border-radius: 2px;
+}
+
+.btn.btn-danger {
+  border-color: #D90429;
+  background-color: #EF233C;
+}
+
+.btn.btn-primary {
+  border-color: #2B2D42;
+  background-color: #2B2D42;
+}
+
+.btn.btn-default:hover {
+  background-color: #fafafa;
+}
+
+.top-hero {
+  background-color: #fafafa;
+  background-image: linear-gradient(rgba(43, 45, 66, 0.75), rgba(43, 45, 66, 0.75)), url("https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?dpr=1&auto=compress,format&fit=crop&w=1199&h=799&q=80&cs=tinysrgb&crop=&bg=");
+  background-size: cover;
+  background-position: bottom;
+  background-attachment: fixed;
+  height: 100vh;
+  padding-top: 125px;
+  display: flex;
+  align-items: center;
+}
+.top-hero h1 {
+  color: #D90429;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+  text-transform: uppercase;
+  width: 50%;
+  letter-spacing: -1px;
+  line-height: .9;
+}
+.top-hero p {
+  color: #EDF2F4;
+}
+@media only screen and (max-width: 768px) {
+  .top-hero {
+    min-height: 400px;
+    padding-top: 50px;
+  }
+  .top-hero h1 {
+    font-size: 36px;
+    margin-top: 50px;
+  }
+}
+
+.top-nav {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.top-nav.sticky {
+  position: fixed;
+}
+.top-nav ul {
+  float: right;
+}
+.top-nav ul .signup-btn {
+  padding: .25em .5em;
+}
+.top-nav ul .signup-btn,
+.top-nav ul .signup-btn:hover {
+  color: #EDF2F4 !important;
+  border-bottom: 1px solid #D90429 !important;
+  border-color: #D90429 !important;
+}
+.top-nav a {
+  font-size: 1.1rem;
+  color: #EDF2F4;
   text-decoration: none;
-  text-shadow: none;
-  border-radius: 3px;
-  box-shadow: none;
-  transition: 0.25s;
-  display: block;
-  width: 250px;
-  margin: 0 auto;
+  border-bottom: 3px solid transparent;
+  padding: 0 0 5px;
+  transition: .25s;
+}
+.top-nav a:hover {
+  color: #EF233C;
+  border-color: #EF233C;
 }
 
-.btn:hover {
-  background-color: #2980B9;
+.banner {
+  color: #EDF2F4;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+.banner .wrapper {
+  text-align: center;
+}
+@media only screen and (max-width: 768px) {
+  .banner {
+    min-height: 400px;
+  }
+  .banner h1,
+  .banner h2 {
+    font-size: 20px;
+  }
+}
+.banner.speakers, .banner.signup {
+  background-color: #D90429;
+}
+.banner.speakers {
+  background-image: linear-gradient(rgba(217, 4, 41, 0.45), rgba(217, 4, 41, 0.45)), url("https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?dpr=1&auto=compress,format&fit=crop&w=1199&h=764&q=80&cs=tinysrgb&crop=&bg=");
+}
+.banner.learn {
+  background-color: #2B2D42;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("https://images.unsplash.com/photo-1493020258366-be3ead1b3027?dpr=1&auto=compress,format&fit=crop&w=1199&h=1199&q=80&cs=tinysrgb&crop=&bg=");
+}
+.banner.signup {
+  background-image: linear-gradient(rgba(217, 4, 41, 0.45), rgba(217, 4, 41, 0.45)), url("https://images.unsplash.com/photo-1487537708572-3c850b5e856e?dpr=1&auto=compress,format&fit=crop&w=1199&h=798&q=80&cs=tinysrgb&crop=&bg=");
 }
 
-.login-link {
-  font-size: 12px;
-  color: #444;
-  display: block;
-	margin-top: 12px;
+footer {
+  text-align: center;
+  background-color: #2B2D42;
+  color: #EDF2F4;
 }
+footer .copyright {
+  padding: 0;
+  margin-top: 7px;
+  font-size: 0.9rem;
+}
+
+#speakers_modal .list-group-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+

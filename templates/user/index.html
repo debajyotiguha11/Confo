@@ -4,7 +4,7 @@
     <section class="content">
       <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Dashboard </h1></div>
 
-                <h3 class="center-align">My Applications</h3>
+                <h3 class="center-align">My Bookings</h3>
                 <div id="auto" class="custom-responsive">
                   <table class="striped hover centered">
                     <thead><tr>
@@ -20,36 +20,36 @@
                   <tbody>
                     {% for row in applications %}
                 <tr>
+                    <td>{{row.0}}</td>
                     <td>{{row.1}}</td>
                     <td>{{row.2}}</td>
+                    <td>{{row.3}}</td>
                     <td>{{row.4}}</td>
-                    <td>{{row.6}}</td>
-                    <td>{{row.7}}</td>
-        {% if row[8] == 0 %}
+        {% if row[5] == 0 %}
         <td><i class="text-green material-icons">maximize</i></td>
-                    {% elif row[8] == 1 %}
+                    {% elif row[5] == 1 %}
                     <td><i class="text-green material-icons">check</i></td>
                     {% else %}
                     <td><i class="text-red material-icons">close</i></td>
                     {% endif %}
                     <td>
 
-		{% if row[8] == 1 %}
+		{% if row[5] == 1 %}
                 <div class="btn-toolbar">
                       <a href="#" class="btn green" name="done"><i class="material-icons">done</i></a>
                     </button>
-		{% elif row[8] == 2 %}
+		{% elif row[5] == 2 %}
 		<div class="btn-toolbar">
                     <a href="#" class="btn red" name="remove"><i class="material-icons">close</i></a>
 		</button>
 		{% else %}
-<a href="/update/{{row.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a>
-<a href="/delete/{{ row.0 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+<a href="/update/{{row.6}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.6}}">Edit</a>
+<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
 		{% endif %}
 
                     </td>
                 </tr>
-                <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
+                <div id="modaledit{{row.6}}" class="modal fade" role="dialog">
 
 
    <div class="modal-dialog">
@@ -79,7 +79,7 @@
               <div class="form-group">
 
                  <label>Name</label>
-                 <input type="hidden"  name="id_data" value="{{row.0}}">
+                 <input type="hidden"  name="id_data" value="{{row.6}}">
                  <input type="text" class="form-control" name="name" value="{{session.username}}" disabled>
 
 
@@ -92,7 +92,7 @@
 
                  <label>Date From</label>
 
-                 <input type="text" placeholder="2018-09-01 14:45:00" name="datef" value="{{ row.2}}" required>
+                 <input type="date" placeholder="2018-09-01 14:45:00" name="datef" value="{{ row.1}}" required>
 
 
               </div>
@@ -103,7 +103,7 @@
 
                  <label>Date To</label>
 
-                 <input type="text" placeholder="2018-09-02 14:45:00" name="datet" value="{{ row.3}}" readonly>
+                 <input type="date" placeholder="2018-09-02" name="datet" value="{{ row.7}}" >
 
 
               </div>
@@ -137,7 +137,7 @@
 
                  <label>Hall</label>
 
-                 <input type="text" class="form-control" name="hall" value="{{ row.6 }}" required>
+                 <input type="text" class="form-control" name="hall" value="{{ row.3 }}" disabled>
 
 
               </div>
@@ -148,7 +148,7 @@
 
                  <label>Purpose</label>
 
-                 <input type="text" class="form-control" name="comment" value="{{ row.7}}" required>
+                 <input type="text" class="form-control" name="comment" value="{{ row.4}}" required>
 
 
               </div>
@@ -195,10 +195,6 @@
         </section>
         </main>
 
-        <!-- So this is basically a hack, until I come up with a better solution. autocomplete is overridden
-        in the materialize js file & I don't want that.
-        -->
-        <!-- Yo dawg, I heard you like hacks. So I hacked your hack. (moved the sidenav js up so it actually works) -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
         <script>
