@@ -1,12 +1,17 @@
-# Hall-Booking
+# CONFO
 A Python-Flask app for booking seminar-hall and Live announcements.
 <p align="center">
-  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/1.png" >
-  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/2.png" >
-  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/3.png" >
-  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/4.png" >
-  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/5.png" >
-  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/6.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic1.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic2.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic3.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic4.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic5.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic6.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic7.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic8.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic9.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic10.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic11.png" >
 </p>
 
 ### Requirements
