@@ -6,6 +6,7 @@ The project requires so much of effort if you want to re-use it please mention t
 '''
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'many random bytes'
@@ -40,6 +41,7 @@ def dash():
 @app.route('/register')
 def dash2():
     return render_template('register.html')
+
 
 @app.route('/feedback')
 def feedback():
@@ -79,7 +81,7 @@ def result():
         datet = request.form['datet']
         cap = int(request.form['hall'])
         cur.execute(
-            "select hname,facility,capacity,description from hall h where capacity >= %s and hid not in (select hid from booking where accepted = 1 and datef between %s and %s) order by capacity",(cap,datef,datet))
+            "select hname,facility,capacity,description,price from hall h where capacity >= %s and hid not in (select hid from booking where accepted = 1 and datef between %s and %s) order by capacity",(cap,datef,datet))
         data = cur.fetchall()
         return render_template('user/result.html', result=data)
 
@@ -137,7 +139,7 @@ def approve():
     if not session.get('logged_in'):
         return render_template('index.html')
     if session.get('username') == 'admin':
-        cur.execute("SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid FROM booking b,users u, hall h where b.uid=u.uid and b.hid=h.hid and accepted = 0")
+        cur.execute("SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h where b.uid=u.uid and b.hid=h.hid and accepted = 0")
         data = cur.fetchall()
         return render_template('admin/approve.html', applications=data)
 
@@ -164,10 +166,9 @@ def apply():
         cur.execute("SELECT  * FROM admin")
         data = cur.fetchall()
         return render_template('admin/apply.html', applications=data)
-    cur.execute("SELECT  * FROM booking where uid=%s", (session['id']))
+    cur.execute("SELECT  * FROM hall")
     data = cur.fetchall()
-    # cur.close()
-    return render_template('user/apply.html', applications=data)
+    return render_template('user/apply.html', result=data)
 
 
 @app.route('/accept/<string:id_data>', methods=['GET'])
@@ -255,10 +256,10 @@ def index():
     if not session.get('logged_in'):
         return render_template('index.html')
     if session.get('username') == 'admin':
-        cur.execute("SELECT  name,datef,email,hname,comment,accepted,bid,datet FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid")
+        cur.execute("SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid")
         data = cur.fetchall()
         return render_template('admin/index.html', applications=data)
-    cur.execute("SELECT  name,datef,email,hname,comment,accepted,bid,datet FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s", (session['id']))
+    cur.execute("SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s", (session['id']))
     data = cur.fetchall()
     # cur.close()
     return render_template('user/index.html', applications=data)
@@ -283,9 +284,8 @@ def insert():
         datet = request.form['datet']
         hall = request.form['hall']
         comment = request.form['comment']
-        cur.execute(
-            "INSERT INTO booking (uid, datef, datet, hid, comment,accepted) VALUES (%s, %s, %s, %s, %s, %s)",
-            (session['id'], datef, datet, hall, comment,0))
+        cur.execute("INSERT INTO booking (uid, datef, datet, hid, comment,accepted,paid) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (session['id'], datef, datet, hall, comment,0,0))
         # flash("Data Inserted Successfully")
         db.commit()
         return redirect(url_for('index'))
@@ -299,6 +299,36 @@ def delete(id_data):
     cur.execute("DELETE FROM booking WHERE bid=%s", (id_data))
     db.commit()
     return redirect(url_for('index'))
+
+
+@app.route('/pay/<string:id_data>', methods=['GET'])
+def pay(id_data):
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    x = datetime.datetime.now()
+    cur.execute("UPDATE booking set paid = %s where bid = %s and uid = %s",(1,id_data,session['id']))
+    db.commit()
+    return redirect(url_for('index'))
+
+
+@app.route('/payment/<string:id_data>', methods=['GET'])
+def payment(id_data):
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    else:
+        cur.execute("SELECT  name,datef,email,hname,comment,h.price,b.bid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s", (session['id'],id_data))
+        data = cur.fetchall()
+        return render_template('user/payment.html',result = data)
+
+
+@app.route('/paymentdetails/<string:id_data>', methods=['GET'])
+def paymentdetails(id_data):
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    else:
+        cur.execute("select name,email,ph,h.hname,h.price,datef,comment FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s", (session['id'],id_data))
+        data = cur.fetchall()
+        return render_template('user/paymentdetails.html',result = data)
 
 
 @app.route('/updateaccount', methods=['POST', 'GET'])
@@ -363,11 +393,12 @@ def hallupdate():
         facility = request.form['facility']
         capacity = request.form['capacity']
         description = request.form['description']
+        price = request.form['price']
         cur.execute("""
                UPDATE hall
-               SET hname=%s, facility=%s, capacity=%s, description=%s
+               SET hname=%s, facility=%s, capacity=%s, description=%s, price=%s
                WHERE hid=%s
-            """, (name, facility, capacity,description, id_data))
+            """, (name, facility, capacity,description,price, id_data))
         # flash("Data Updated Successfully")
         db.commit()
         return redirect(url_for('halls'))

@@ -2,19 +2,16 @@
 {% block body %}
   <main>
   <section class="content">
-    <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Apply for a hall </h1></div>
+    <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Payment </h1></div>
     <div class="container">
-      <h3>New Application</h3>
+      <h3>Make Payment</h3>
       <br>
-        <form action="{{ url_for('insert') }}" method="POST">
+	  {% for row in result %}
 
-
-           <div class="form-group">
-
-
+	<div class="form-group">
               <label>Name</label>
 
-              <input type="text" class="form-control" name="name" value="{{session.username}}" disabled>
+              <input type="text" class="form-control" value="{{session.username}}" disabled>
 
 
            </div>
@@ -26,22 +23,10 @@
 
               <label>Date From</label>
 
-              <input type="date" placeholder="2018-09-01" name="datef" required>
+              <input type="date" value="{{row.1}}" disabled>
 
 
            </div>
-
-
-           <div class="form-group">
-
-
-              <label>Date To</label>
-
-              <input type="date" placeholder="2018-09-02" name="datet" required>
-
-
-           </div>
-
 
 
            <div class="form-group">
@@ -66,15 +51,15 @@
            </div>
 
 	
-           <div class="row" >
-               <label>Hall</label>
-{% for row in result %}
-            <p>
-              <input type="radio" name="hall" value="{{row.0}}" id="{{row.0}}"/>
-              <label for="{{row.0}}">{{row.1}}</label>
-            </p>
-{% endfor %}
-          </div>
+		<div class="form-group">
+
+
+              <label>Hall Name</label>
+
+              <input type="text" value="{{row.3}}" disabled>
+
+
+           </div>          	
 
 
            <div class="form-group">
@@ -82,7 +67,18 @@
 
               <label>Purpose</label>
 
-              <input type="text" class="form-control" name="comment" required>
+              <input type="text" value="{{row.4}}" disabled>
+
+
+           </div>
+
+	
+	<div class="form-group">
+
+
+              <label>Ammount</label>
+
+              <input type="text" value="{{row.5}}" disabled>
 
 
            </div>
@@ -92,13 +88,11 @@
            <div class="form-group">
 
 
-              <button class="btn btn-primary" type="sbumit">Apply</button>
+              <a href="/pay/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Payment?')">Pay</a>
 
 
            </div>
-
-
-        </form>
+{% endfor %}
   </section>
   </main>
 

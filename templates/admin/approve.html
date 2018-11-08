@@ -4,7 +4,6 @@
     <section class="content">
 
       <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Need Approvals </h1></div>
-      <div id="posttable" class="container">
         <table class="responsive-table striped hover centered" id="names-table">
           <thead>
             <tr>
@@ -15,7 +14,8 @@
               <th>Phone</th>
               <th>Hall</th>
               <th>Comment</th>
-              <th>Actions:</th>
+	      <th>Payment</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -28,6 +28,11 @@
                     <td>{{row.4}}</td>
                     <td>{{row.5}}</td>
                     <td>{{row.6}}</td>
+		    {% if row[9] == 1 %}
+                    <td><i class="text-green material-icons">check</i></td>
+                    {% else %}
+                    <td><i class="text-red material-icons">close</i></td>
+                    {% endif %}
                     {% if row[7] == 0 %}
                     <td>
                 <div class="btn-toolbar">
@@ -43,18 +48,12 @@
                     </button>
                   </a>
                 </div>
-              </td>
-                    {% elif row[8] == 1 %}
-                    <td><i class="text-red material-icons">check</i></td>
-		                  {% elif row[8] == 2 %}
-                    <td><i class="text-red material-icons">close</i></td>
-                    {% endif %}
+              </td>{% endif %}
                 </tr>
                   {% endfor %}
           </tbody>
         </table>
       </div>
-    </div>
   </section>
   </main>
 {% endblock %}

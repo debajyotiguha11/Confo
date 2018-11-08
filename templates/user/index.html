@@ -44,7 +44,14 @@
 		</button>
 		{% else %}
 <a href="/update/{{row.6}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.6}}">Edit</a>
-<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>{% endif %}
+{% if row[8] == 0  %}
+{% if row[5] == 0 %}
+<a href="/payment/{{ row.6 }}" class="btn btn-warning btn-xs">Payment</a>
+		{% endif %}
+{% endif %}
+{% if row[8] == 1  %}
+<a href="/paymentdetails/{{ row.6 }}" class="btn btn-warning btn-xs">Receipt</a>
 		{% endif %}
 
                     </td>

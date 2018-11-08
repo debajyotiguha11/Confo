@@ -13,7 +13,7 @@
                       <th>Email</th>
                       <th>Hall</th>
                       <th>Comments</th>
-                      <th>Accepted?</th>
+                      <th>Payment</th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -25,9 +25,7 @@
                     <td>{{row.2}}</td>
                     <td>{{row.3}}</td>
                     <td>{{row.4}}</td>
-        {% if row[5] == 0 %}
-        <td><i class="text-green material-icons">maximize</i></td>
-                    {% elif row[5] == 1 %}
+                    {% if row[8] == 1 %}
                     <td><i class="text-green material-icons">check</i></td>
                     {% else %}
                     <td><i class="text-red material-icons">close</i></td>
