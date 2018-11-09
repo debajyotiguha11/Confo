@@ -1,0 +1,104 @@
+{% include 'admin/header.html' %}
+{% block body %}
+    <main>
+    <section class="content">
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Add Hall </h1></div>
+      <div class="container">
+        <h3>Add a new Hall</h3>
+        <br>
+          <form action="{{ url_for('hallinsert') }}" method="POST">
+
+
+             <div class="form-group">
+
+
+                <label>Hall Name</label>
+
+                <input type="text" class="form-control" name="hname" placeholder="Hall 1" required>
+
+
+             </div>
+
+
+
+             <div class="form-group">
+
+
+                <label>Facility</label>
+
+                <input type="text" class="form-control" name="facility" placeholder="Having 2500 seating arrangement with AC" required>
+
+
+             </div>
+
+
+             <div class="form-group">
+
+
+                <label>Capacity</label>
+
+                <input type="number" class="form-control" name="capacity" placeholder="50000" required>
+
+
+             </div>
+
+
+
+             <div class="form-group">
+
+
+                <label>Description</label>
+
+                <input type="text" class="form-control" name="description" placeholder="Hall 1 is in the 3rd floor" required>
+
+
+             </div>
+
+
+             <div class="form-group">
+
+
+                <label>Price</label>
+
+                <input type="text" class="form-control" name="price" placeholder="35000" required>
+
+
+             </div>
+
+
+             <div class="form-group">
+
+
+                <button class="btn btn-primary" type="sbumit">Add Hall</button>
+
+
+             </div>
+
+
+          </form>
+    </section>
+    </main>
+{% endblock %}
+       
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+        <script>
+        // Hide sideNav
+        $('.button-collapse').sideNav({
+        menuWidth: 300, // Default is 300
+        edge: 'left', // Choose the horizontal origin
+        closeOnClick: false, // Closes side-nav on <a> clicks, useful for Angular/Meteor
+          draggable: true // Choose whether you can drag to open on touch screens
+          });
+          $(document).ready(function(){
+          $('.tooltipped').tooltip({delay: 50});
+          });
+          $('select').material_select();
+          $('.collapsible').collapsible();
+          </script>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
+
+        <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+        {% include 'admin/footer.html' %}

@@ -1,4 +1,4 @@
-{% include 'user/header.html' %}
+{% include 'admin/header.html' %}
 {% block body %}
     <main>
     <section class="content">
@@ -6,74 +6,71 @@
       <div class="container">
         <h3>Account Information</h3>
         <br>
-          <form action="{{ url_for('updateaccount') }}" method="POST">
+        <form action="{{ url_for('updateaccount') }}" method="POST">
 
 
-             <div class="form-group">
+           <div class="form-group">
 
 
-                <label>ID:</label>
-                 <input type="text"  name="id" value="{{session.id}}" disabled>
-                <label>Name:</label>
-                <input type="text" class="form-control" name="name" placeholder="{{session.username}}" required>
+              <label>ID:</label>
+               <input type="text"  name="id" value="{{session.id}}" disabled>
+              <label>Name:</label>
+              <input type="text" class="form-control" name="name" placeholder="{{session.username}}" required>
 
 
-             </div>
-
-
-
-             <div class="form-group">
-
-
-                <label>password:</label>
-
-                <input type="password" class="form-control" name="password" placeholder="***********" required>
-
-
-             </div>
-
-
-             <div class="form-group">
-
-
-                <label>Email:</label>
-
-                <input type="text" class="form-control" name="email" placeholder="{{session.email}}" required>
-
-
-             </div>
+           </div>
 
 
 
-             <div class="form-group">
+           <div class="form-group">
 
 
-                <label>Phone:</label>
+              <label>password:</label>
 
-                <input type="text" class="form-control" name="phone" placeholder="{{session.phone}}" required>
-
-
-             </div>
+              <input type="password" class="form-control" name="password" placeholder="*************" required>
 
 
-
-             <div class="form-group">
-
-
-                <button class="btn btn-primary" type="sbumit">Update</button>
+           </div>
 
 
-             </div>
+           <div class="form-group">
 
 
-          </form>
-<br>
-<div class="btn-toolbar">
-                    <a href="/remove/{{ session.id }}" class="btn red" onclick="return confirm('Are You Sure For Delete?')" name="remove">Delete Account</a>
-		</button>
+              <label>Email:</label>
+
+              <input type="text" class="form-control" name="email" placeholder="{{session.email}}" required>
+
+
+           </div>
+
+
+
+           <div class="form-group">
+
+
+              <label>Phone:</label>
+
+              <input type="text" class="form-control" name="phone" placeholder="{{session.phone}}" required>
+
+
+           </div>
+
+
+
+           <div class="form-group">
+
+
+              <button class="btn btn-primary" type="sbumit">Update</button>
+
+
+           </div>
+
+
+        </form>
     </section>
     </main>
-     <!-- So this is basically a hack, until I come up with a better solution. autocomplete is overridden
+   {% endblock %}
+        <!-- So this is basically a hack, until I come up with a better solution. autocomplete is overridden
         in the materialize js file & I don't want that.
         -->
         <!-- Yo dawg, I heard you like hacks. So I hacked your hack. (moved the sidenav js up so it actually works) -->
@@ -98,6 +95,4 @@
         <script type="text/javascript" src="{{url_for('static', filename='js/jquery-3.2.1.min.js') }}"></script>
 
         <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
-
-  {% endblock %}
-{% include 'user/footer.html' %}
+        {% include 'admin/footer.html' %}

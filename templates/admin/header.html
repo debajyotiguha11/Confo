@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
       <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+<link rel="icon" type="image/png" href="https://png.icons8.com/plasticine/100/technical-support.png">
+
   </head>
 
   <body>
@@ -32,21 +34,33 @@ Phone: {{session.phone}}</font>
 
       <li><a class="subheader">Management</a></li>
       <li><a href="/approve"><i class="material-icons pink-item">thumbs_up_down</i>Need Approvals</a></li>
-        <li><a href="/edituser">Update Profile<i class="material-icons pink-item">person</i></a></li>
 <li><a href="/feedback">Feedbacks<i class="material-icons pink-item">favorite</i></a></li>
-<li><a href="/halls">Halls<i class="material-icons pink-item">home</i></a></li>
+<li class="no-padding">
+        <ul class="collapsible collapsible-accordion">
+          <li>
+            <a class="collapsible-header">Hall<i class="material-icons pink-item">arrow_drop_down</i></a>
+            <div class="collapsible-body">
+              <ul>
+                <li><a href="/addhall">Add New Hall<i class="material-icons pink-item">add</i></a></li>
+                <li><a href="/halls">Edit Halls<i class="material-icons pink-item">home</i></a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </li>
         <li class="no-padding">
         <ul class="collapsible collapsible-accordion">
           <li>
             <a class="collapsible-header">Announcements<i class="material-icons pink-item">arrow_drop_down</i></a>
             <div class="collapsible-body">
               <ul>
-                <li><a href="addannoun">Add New</a></li>
-                <li><a href="viewannoun">All Announcements</a></li>
+                <li><a href="addannoun">Add New<i class="material-icons pink-item">add</i></a></li>
+                <li><a href="viewannoun">View all<i class="material-icons pink-item">announcement</i></a></li>
               </ul>
             </div>
           </li>
         </ul>
       </li>
+<li><a href="/edituser">Update Profile<i class="material-icons pink-item">person</i></a></li>
       <center><button type="button" onclick="window.location.href='{{ url_for( 'logout' ) }}';" class="waves-effect waves-teal btn-flat"><i class="material-icons right red-text">power_settings_new</i></button></center>
     </ul>

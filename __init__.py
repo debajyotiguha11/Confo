@@ -1,12 +1,12 @@
-'''
+"""
 Author: Debjyoti Guha
 Date: 08/10/2018
 Description:  A Python-Flask app for booking seminar-hall and Live announcements.
 The project requires so much of effort if you want to re-use it please mention the Authors in your project.
-'''
+"""
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql
-import datetime
+import hashlib
 
 app = Flask(__name__)
 app.secret_key = 'many random bytes'
@@ -48,9 +48,10 @@ def feedback():
     if not session.get('logged_in'):
         return render_template('index.html')
     if session.get('username') == 'admin':
-    	cur.execute("SELECT  u.name,f.datef,u.email,h.hname,feedback FROM feedback f, users u, hall h where f.uid = u.uid and f.hid = h.hid order by f.datef DESC")
-    	data = cur.fetchall()
-    	return render_template('admin/feedbacks.html',result = data)
+        cur.execute(
+            "SELECT  u.name,f.datef,u.email,h.hname,feedback FROM feedback f, users u, hall h where f.uid = u.uid and f.hid = h.hid order by f.datef DESC")
+        data = cur.fetchall()
+        return render_template('admin/feedbacks.html', result=data)
     return render_template('user/feedback.html')
 
 
@@ -62,15 +63,16 @@ def submit():
         datef = request.form['datef']
         hall = int(request.form['hall'])
         fk = request.form['feedback']
-        cur.execute("INSERT INTO feedback (uid,hid,feedback,datef) values (%s, %s, %s, %s)",(session['id'],hall,fk,datef))
+        cur.execute("INSERT INTO feedback (uid,hid,feedback,datef) values (%s, %s, %s, %s)",
+                    (session['id'], hall, fk, datef))
         db.commit()
         return render_template('user/thanks.html')
-
 
 
 @app.route('/search')
 def search():
     return render_template('user/search.html')
+
 
 @app.route('/result', methods=['POST'])
 def result():
@@ -81,7 +83,8 @@ def result():
         datet = request.form['datet']
         cap = int(request.form['hall'])
         cur.execute(
-            "select hname,facility,capacity,description,price from hall h where capacity >= %s and hid not in (select hid from booking where accepted = 1 and datef between %s and %s) order by capacity",(cap,datef,datet))
+            "select hname,facility,capacity,description,price from hall h where capacity >= %s and hid not in (select hid from booking where accepted = 1 and datef between %s and %s) order by capacity",
+            (cap, datef, datet))
         data = cur.fetchall()
         return render_template('user/result.html', result=data)
 
@@ -118,7 +121,7 @@ def announce():
             date = request.form['date']
             active = 1
             cur.execute("INSERT INTO announcements (sub, comment, datef, active, aid) VALUES ( %s, %s, %s, %s, %s)",
-                        (sub, text, date, active,session['id']))
+                        (sub, text, date, active, session['id']))
             # flash("Data Inserted Successfully")
             db.commit()
             return redirect(url_for('viewannoun'))
@@ -139,7 +142,8 @@ def approve():
     if not session.get('logged_in'):
         return render_template('index.html')
     if session.get('username') == 'admin':
-        cur.execute("SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h where b.uid=u.uid and b.hid=h.hid and accepted = 0")
+        cur.execute(
+            "SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h where b.uid=u.uid and b.hid=h.hid and accepted = 0")
         data = cur.fetchall()
         return render_template('admin/approve.html', applications=data)
 
@@ -151,7 +155,7 @@ def edituser():
     if session.get('username') == 'admin':
         cur.execute("SELECT  * FROM admin")
         data = cur.fetchall()
-        return render_template('admin/updateuser.html', applications=data)
+        return render_template('admin/updateadmin.html', applications=data)
     cur.execute("SELECT  * FROM users where uid=%s", (session['id']))
     data = cur.fetchall()
     # cur.close()
@@ -162,10 +166,6 @@ def edituser():
 def apply():
     if not session.get('logged_in'):
         return render_template('index.html')
-    if session.get('username') == 'admin':
-        cur.execute("SELECT  * FROM admin")
-        data = cur.fetchall()
-        return render_template('admin/apply.html', applications=data)
     cur.execute("SELECT  * FROM hall")
     data = cur.fetchall()
     return render_template('user/apply.html', result=data)
@@ -194,7 +194,8 @@ def reject(id_data):
 @app.route('/adminlogin', methods=['POST'])
 def do_admin_login():
     username = request.form['username']
-    password = request.form['password']
+    p = request.form['password']
+    password = hashlib.md5(p.encode()).hexdigest()
     cur.execute("SELECT * from admin where name='" + username + "' and pass='" + password + "'")
     data = cur.fetchone()
     if data is None:
@@ -203,7 +204,6 @@ def do_admin_login():
     else:
         session['logged_in'] = True
         session['username'] = username
-        session['password'] = data[2]
         session['email'] = data[3]
         session['phone'] = data[4]
         session['id'] = data[0]
@@ -213,7 +213,8 @@ def do_admin_login():
 @app.route('/userlogin', methods=['POST'])
 def do_user_login():
     username = request.form['username']
-    password = request.form['password']
+    p = request.form['password']
+    password = hashlib.md5(p.encode()).hexdigest()
     cur.execute("SELECT * from users where name='" + username + "' and pass='" + password + "'")
     data = cur.fetchone()
     if data is None:
@@ -222,7 +223,6 @@ def do_user_login():
     else:
         session['logged_in'] = True
         session['username'] = username
-        session['password'] = data[2]
         session['email'] = data[3]
         session['phone'] = data[4]
         session['id'] = data[0]
@@ -235,7 +235,8 @@ def userregister():
         return home()
     if request.method == "POST":
         name = request.form['username']
-        password = request.form['password']
+        p = request.form['password']
+        password = hashlib.md5(p.encode()).hexdigest()
         email = request.form['email']
         phone = request.form['phone']
         cur.execute("INSERT INTO users ( name, pass, email, ph) VALUES (%s, %s, %s, %s)",
@@ -256,13 +257,24 @@ def index():
     if not session.get('logged_in'):
         return render_template('index.html')
     if session.get('username') == 'admin':
-        cur.execute("SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid")
+        cur.execute(
+            "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid")
         data = cur.fetchall()
         return render_template('admin/index.html', applications=data)
-    cur.execute("SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s", (session['id']))
+    cur.execute(
+        "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s",
+        (session['id']))
     data = cur.fetchall()
     # cur.close()
     return render_template('user/index.html', applications=data)
+
+
+@app.route('/addhall')
+def addhall():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if session.get('username') == 'admin':
+        return render_template('admin/addhall.html')
 
 
 @app.route('/halls')
@@ -275,6 +287,34 @@ def halls():
     return render_template('admin/halls.html', result=data)
 
 
+@app.route('/hallinsert', methods=['POST'])
+def hallinsert():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if session.get('username') == 'admin':
+        if request.method == "POST":
+            hname = request.form['hname']
+            facility = request.form['facility']
+            capacity = request.form['capacity']
+            description = request.form['description']
+            price = request.form['price']
+            cur.execute("INSERT INTO hall (hname, facility, capacity, description, price) VALUES (%s, %s, %s, %s, %s)",(hname, facility, capacity,description, price))
+            # flash("hall Inserted Successfully")
+            db.commit()
+            return redirect(url_for('halls'))
+
+
+@app.route('/deletehall/<string:id_data>', methods=['GET'])
+def deletehall(id_data):
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if session.get('username') == 'admin':
+        # flash("Record Has Been Deleted Successfully")
+        cur.execute("DELETE FROM hall WHERE hid=%s", (id_data))
+        db.commit()
+        return redirect(url_for('halls'))
+
+
 @app.route('/insert', methods=['POST'])
 def insert():
     if not session.get('logged_in'):
@@ -284,8 +324,9 @@ def insert():
         datet = request.form['datet']
         hall = request.form['hall']
         comment = request.form['comment']
-        cur.execute("INSERT INTO booking (uid, datef, datet, hid, comment,accepted,paid) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (session['id'], datef, datet, hall, comment,0,0))
+        cur.execute(
+            "INSERT INTO booking (uid, datef, datet, hid, comment,accepted,paid) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (session['id'], datef, datet, hall, comment, 0, 0))
         # flash("Data Inserted Successfully")
         db.commit()
         return redirect(url_for('index'))
@@ -305,8 +346,7 @@ def delete(id_data):
 def pay(id_data):
     if not session.get('logged_in'):
         return render_template('index.html')
-    x = datetime.datetime.now()
-    cur.execute("UPDATE booking set paid = %s where bid = %s and uid = %s",(1,id_data,session['id']))
+    cur.execute("UPDATE booking set paid = %s where bid = %s and uid = %s", (1, id_data, session['id']))
     db.commit()
     return redirect(url_for('index'))
 
@@ -316,9 +356,11 @@ def payment(id_data):
     if not session.get('logged_in'):
         return render_template('index.html')
     else:
-        cur.execute("SELECT  name,datef,email,hname,comment,h.price,b.bid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s", (session['id'],id_data))
+        cur.execute(
+            "SELECT  name,datef,email,hname,comment,h.price,b.bid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s",
+            (session['id'], id_data))
         data = cur.fetchall()
-        return render_template('user/payment.html',result = data)
+        return render_template('user/payment.html', result=data)
 
 
 @app.route('/paymentdetails/<string:id_data>', methods=['GET'])
@@ -326,9 +368,11 @@ def paymentdetails(id_data):
     if not session.get('logged_in'):
         return render_template('index.html')
     else:
-        cur.execute("select name,email,ph,h.hname,h.price,datef,comment FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s", (session['id'],id_data))
+        cur.execute(
+            "select name,email,ph,h.hname,h.price,datef,comment FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s",
+            (session['id'], id_data))
         data = cur.fetchall()
-        return render_template('user/paymentdetails.html',result = data)
+        return render_template('user/paymentdetails.html', result=data)
 
 
 @app.route('/updateaccount', methods=['POST', 'GET'])
@@ -337,23 +381,25 @@ def updateaccount():
         return render_template('index.html')
     if request.method == 'POST':
         id_data = session['id']
-        password = request.form['password']
+        p = request.form['password']
+        password = hashlib.md5(p.encode()).hexdigest()
+        name = request.form['name']
         email = request.form['email']
         phone = request.form['phone']
         if session.get('username') == 'admin':
             cur.execute("""
                 UPDATE admin
-                SET  pass=%s, email=%s, ph=%s
+                SET  name=%s, pass=%s, email=%s, ph=%s
                 WHERE aid=%s
-                """, (password, email, phone, id_data))
+                """, (name, password, email, phone, id_data))
             db.commit()
             session['logged_in'] = False
             return redirect(url_for('index'))
         cur.execute("""
             UPDATE users
-            SET  pass=%s, email=%s, ph=%s
+            SET  name=%s, pass=%s, email=%s, ph=%s
             WHERE uid=%s
-            """, (password, email, phone, id_data))
+            """, (name, password, email, phone, id_data))
         # flash("Data Updated Successfully")
         db.commit()
         session['logged_in'] = False
@@ -366,12 +412,8 @@ def update():
         return render_template('index.html')
     if request.method == 'POST':
         id_data = request.form['id_data']
-        name = session['username']
-        email = session['email']
-        phone = session['phone']
         datef = request.form['datef']
         datet = request.form['datet']
-        #hall = request.form['hall']
         comment = request.form['comment']
         cur.execute("""
                UPDATE booking
@@ -398,7 +440,7 @@ def hallupdate():
                UPDATE hall
                SET hname=%s, facility=%s, capacity=%s, description=%s, price=%s
                WHERE hid=%s
-            """, (name, facility, capacity,description,price, id_data))
+            """, (name, facility, capacity, description, price, id_data))
         # flash("Data Updated Successfully")
         db.commit()
         return redirect(url_for('halls'))

@@ -23,7 +23,8 @@
                     <td>{{row.3}}</td>
                     <td>{{row.4}}</td>
 		    <td>{{row.5}}</td>
-		    <td><a href="/update/{{row.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a></td>
+		    <td><a href="/update/{{row.0}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.0}}">Edit</a>
+		    <a href="/deletehall/{{row.0}}" class="btn red" name="remove" onclick="return confirm('Are You Sure For Delete?')">Delete</a></td>
 		</tr>
 <div id="modaledit{{row.0}}" class="modal fade" role="dialog">
 
