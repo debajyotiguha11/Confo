@@ -23,7 +23,9 @@ except:
 @app.route('/')
 def home():
     if not session.get('logged_in'):
-        return render_template('index.html')
+        cur.execute("SELECT * FROM hall ORDER BY capacity")
+        data = cur.fetchall()
+        return render_template('index.html',result=data)
     else:
         return redirect('/index')
 
@@ -143,7 +145,7 @@ def approve():
         return render_template('index.html')
     if session.get('username') == 'admin':
         cur.execute(
-            "SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h where b.uid=u.uid and b.hid=h.hid and accepted = 0")
+            "SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h,payment p where b.uid=u.uid and b.hid=h.hid and b.uid = p.uid and b.hid = p.hid and accepted = 0")
         data = cur.fetchall()
         return render_template('admin/approve.html', applications=data)
 
@@ -255,14 +257,14 @@ def logout():
 @app.route('/index')
 def index():
     if not session.get('logged_in'):
-        return render_template('index.html')
+        return redirect('/')
     if session.get('username') == 'admin':
         cur.execute(
-            "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid")
+            "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid")
         data = cur.fetchall()
         return render_template('admin/index.html', applications=data)
     cur.execute(
-        "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s",
+        "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s",
         (session['id']))
     data = cur.fetchall()
     # cur.close()
@@ -298,7 +300,8 @@ def hallinsert():
             capacity = request.form['capacity']
             description = request.form['description']
             price = request.form['price']
-            cur.execute("INSERT INTO hall (hname, facility, capacity, description, price) VALUES (%s, %s, %s, %s, %s)",(hname, facility, capacity,description, price))
+            cur.execute("INSERT INTO hall (hname, facility, capacity, description, price) VALUES (%s, %s, %s, %s, %s)",
+                        (hname, facility, capacity, description, price))
             # flash("hall Inserted Successfully")
             db.commit()
             return redirect(url_for('halls'))
@@ -325,8 +328,8 @@ def insert():
         hall = request.form['hall']
         comment = request.form['comment']
         cur.execute(
-            "INSERT INTO booking (uid, datef, datet, hid, comment,accepted,paid) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (session['id'], datef, datet, hall, comment, 0, 0))
+            "INSERT INTO booking (uid, datef, datet, hid, comment,accepted) VALUES (%s, %s, %s, %s, %s, %s)",
+            (session['id'], datef, datet, hall, comment, 0,))
         # flash("Data Inserted Successfully")
         db.commit()
         return redirect(url_for('index'))
@@ -342,13 +345,19 @@ def delete(id_data):
     return redirect(url_for('index'))
 
 
-@app.route('/pay/<string:id_data>', methods=['GET'])
-def pay(id_data):
+@app.route('/pay', methods=['POST'])
+def pay():
     if not session.get('logged_in'):
         return render_template('index.html')
-    cur.execute("UPDATE booking set paid = %s where bid = %s and uid = %s", (1, id_data, session['id']))
-    db.commit()
-    return redirect(url_for('index'))
+    if request.method == 'POST':
+        id_data = request.form['id_data']
+        ac = request.form['ac']
+        cvv = request.form['cvv']
+        pin = request.form['pin']
+        cur.execute("UPDATE payment set paid = %s, paydate = now(), ac=%s, cvv=%s, pin=%s where pid = %s and uid = %s",
+                (1,ac,cvv,pin, id_data, session['id']))
+        db.commit()
+        return redirect(url_for('index'))
 
 
 @app.route('/payment/<string:id_data>', methods=['GET'])
@@ -369,7 +378,7 @@ def paymentdetails(id_data):
         return render_template('index.html')
     else:
         cur.execute(
-            "select name,email,ph,h.hname,h.price,datef,comment FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s",
+            "select name,email,ph,h.hname,h.price,paydate,comment,ac FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s and b.bid=%s",
             (session['id'], id_data))
         data = cur.fetchall()
         return render_template('user/paymentdetails.html', result=data)

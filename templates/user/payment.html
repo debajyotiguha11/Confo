@@ -7,11 +7,12 @@
       <h3>Make Payment</h3>
       <br>
 	  {% for row in result %}
-
+<form action="{{ url_for('pay') }}" method="POST">
 	<div class="form-group">
               <label>Name</label>
 
               <input type="text" class="form-control" value="{{session.username}}" disabled>
+		<input type="hidden" class="form-control" value="{{row.6}}" name="id_data" >
 
 
            </div>
@@ -83,12 +84,42 @@
 
            </div>
 
+	<div class="form-group">
+
+
+              <label>A/C No</label>
+
+              <input type="text" name="ac" placeholder="AC12345678">
+
+
+           </div>
+
+	<div class="form-group">
+
+
+              <label>CVV</label>
+
+              <input type="password" name="cvv" placeholder="***">
+
+
+           </div>
+
+	<div class="form-group">
+
+
+              <label>PIN</label>
+
+              <input type="password" name="pin" placeholder="***">
+
+
+           </div>
+
 
 
            <div class="form-group">
 
 
-              <a href="/pay/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Payment?')">Pay</a>
+              <button class="btn btn-primary" type="sbumit">Pay</button>
 
 
            </div>

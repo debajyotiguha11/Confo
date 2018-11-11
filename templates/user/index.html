@@ -48,11 +48,28 @@
 {% if row[8] == 0  %}
 {% if row[5] == 0 %}
 <a href="/payment/{{ row.6 }}" class="btn btn-warning btn-xs">Payment</a>
-		{% endif %}
+{% endif %}
+{% endif %}
+{% if row[8] == 0  %}
+{% if row[5] == 1 %}
+<a href="/payment/{{ row.6 }}" class="btn btn-warning btn-xs">Payment</a>
+{% endif %}
 {% endif %}
 {% if row[8] == 1  %}
+{% if row[5] == 0 %}
 <a href="/paymentdetails/{{ row.6 }}" class="btn btn-warning btn-xs">Receipt</a>
-		{% endif %}
+{% endif %}
+{% endif %}
+{% if row[8] == 1  %}
+{% if row[5] == 1  %}
+<a href="/paymentdetails/{{ row.6 }}" class="btn btn-warning btn-xs">Receipt</a>
+{% endif %}
+{% endif %}
+{% if row[8] == 1  %}
+{% if row[5] == 2 %}
+<a href="/paymentdetails/{{ row.6 }}" class="btn btn-warning btn-xs">Refund</a>
+{% endif %}
+{% endif %}
 
                     </td>
                 </tr>
