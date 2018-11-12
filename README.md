@@ -1,5 +1,17 @@
 # CONFO
-A Python-Flask app for booking seminar-hall and Live announcements.
+A Python-Flask app for booking seminar-hall and Live announcements. 
+
+### LIVE DEMO: https://debajyotiguha11.pythonanywhere.com/ 
+
+## ADMIN Login
+username: admin & Password: admin
+
+## User Login
+1. Username: user & Password: user
+2. Username: user1 & Password: user1
+3. Username: user2 & Password: user2
+
+
 <p align="center">
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic1.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic2.png" >
@@ -23,7 +35,6 @@ A Python-Flask app for booking seminar-hall and Live announcements.
 
 1. Clone and navigate to Hall-Booking directory.
 
-    ```
 2. Run the python script.
     ```bash
     python3 __init__.py
