@@ -15,7 +15,7 @@
               <label>ID:</label>
                <input type="text"  name="id" value="{{session.id}}" disabled>
               <label>Name:</label>
-              <input type="text" class="form-control" name="name" placeholder="{{session.username}}" disabled>
+              <input type="text" class="form-control" name="name" value="{{session.username}}" required>
 
 
            </div>
@@ -38,7 +38,7 @@
 
               <label>Email:</label>
 
-              <input type="text" class="form-control" name="email" placeholder="{{session.email}}" required>
+              <input type="text" class="form-control" name="email" value="{{session.email}}" required>
 
 
            </div>
@@ -50,7 +50,7 @@
 
               <label>Phone:</label>
 
-              <input type="text" class="form-control" name="phone" placeholder="{{session.phone}}" required>
+              <input type="text" class="form-control" name="phone" value="{{session.phone}}" required>
 
 
            </div>

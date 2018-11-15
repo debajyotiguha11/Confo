@@ -7,9 +7,10 @@ The project requires so much of effort if you want to re-use it please mention t
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import pymysql
 import hashlib
+from os import urandom
 
 app = Flask(__name__)
-app.secret_key = 'many random bytes'
+app.secret_key = urandom(100)
 
 try:
     db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
@@ -25,7 +26,7 @@ def home():
     if not session.get('logged_in'):
         cur.execute("SELECT * FROM hall ORDER BY capacity")
         data = cur.fetchall()
-        return render_template('index.html',result=data)
+        return render_template('index.html', result=data)
     else:
         return redirect('/index')
 
@@ -160,7 +161,6 @@ def edituser():
         return render_template('admin/updateadmin.html', applications=data)
     cur.execute("SELECT  * FROM users where uid=%s", (session['id']))
     data = cur.fetchall()
-    # cur.close()
     return render_template('user/updateuser.html', applications=data)
 
 
@@ -195,17 +195,17 @@ def reject(id_data):
 
 @app.route('/adminlogin', methods=['POST'])
 def do_admin_login():
-    username = request.form['username']
+    email = request.form['email']
     p = request.form['password']
     password = hashlib.md5(p.encode()).hexdigest()
-    cur.execute("SELECT * from admin where name='" + username + "' and pass='" + password + "'")
+    cur.execute("SELECT * from admin where email = '" + email + "' and pass='" + password + "'")
     data = cur.fetchone()
     if data is None:
         flash('wrong credentials!')
         return dash1()
     else:
         session['logged_in'] = True
-        session['username'] = username
+        session['username'] = data[1]
         session['email'] = data[3]
         session['phone'] = data[4]
         session['id'] = data[0]
@@ -214,17 +214,17 @@ def do_admin_login():
 
 @app.route('/userlogin', methods=['POST'])
 def do_user_login():
-    username = request.form['username']
+    email = request.form['email']
     p = request.form['password']
     password = hashlib.md5(p.encode()).hexdigest()
-    cur.execute("SELECT * from users where name='" + username + "' and pass='" + password + "'")
+    cur.execute("SELECT * from users where email = '" + email + "' and pass='" + password + "'")
     data = cur.fetchone()
     if data is None:
         flash('wrong credentials!')
         return dash()
     else:
         session['logged_in'] = True
-        session['username'] = username
+        session['username'] = data[1]
         session['email'] = data[3]
         session['phone'] = data[4]
         session['id'] = data[0]
@@ -267,7 +267,6 @@ def index():
         "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s",
         (session['id']))
     data = cur.fetchall()
-    # cur.close()
     return render_template('user/index.html', applications=data)
 
 
@@ -285,8 +284,8 @@ def halls():
         return render_template('index.html')
     if session.get('username') == 'admin':
         cur.execute("SELECT * from hall ORDER BY capacity")
-    data = cur.fetchall()
-    return render_template('admin/halls.html', result=data)
+        data = cur.fetchall()
+        return render_template('admin/halls.html', result=data)
 
 
 @app.route('/hallinsert', methods=['POST'])
@@ -355,7 +354,7 @@ def pay():
         cvv = request.form['cvv']
         pin = request.form['pin']
         cur.execute("UPDATE payment set paid = %s, paydate = now(), ac=%s, cvv=%s, pin=%s where pid = %s and uid = %s",
-                (1,ac,cvv,pin, id_data, session['id']))
+                    (1, ac, cvv, pin, id_data, session['id']))
         db.commit()
         return redirect(url_for('index'))
 
@@ -398,21 +397,22 @@ def updateaccount():
         if session.get('username') == 'admin':
             cur.execute("""
                 UPDATE admin
-                SET  name=%s, pass=%s, email=%s, ph=%s
+                SET   name=%s, pass=%s, email=%s, ph=%s
                 WHERE aid=%s
                 """, (name, password, email, phone, id_data))
             db.commit()
             session['logged_in'] = False
             return redirect(url_for('index'))
-        cur.execute("""
+        else:
+            cur.execute("""
             UPDATE users
             SET  name=%s, pass=%s, email=%s, ph=%s
             WHERE uid=%s
             """, (name, password, email, phone, id_data))
-        # flash("Data Updated Successfully")
-        db.commit()
-        session['logged_in'] = False
-        return redirect(url_for('index'))
+            # flash("Data Updated Successfully")
+            db.commit()
+            session['logged_in'] = False
+            return redirect(url_for('index'))
 
 
 @app.route('/update', methods=['POST', 'GET'])
@@ -463,6 +463,11 @@ def remove(id_data):
     db.commit()
     session['logged_in'] = False
     return redirect(url_for('index'))
+
+
+@app.errorhandler(400)
+def bad_request(error):
+    return render_template('errors/400.html', title='Bad Request'), 400
 
 
 @app.errorhandler(403)
