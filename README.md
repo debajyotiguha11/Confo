@@ -14,16 +14,20 @@ username: admin & Password: admin
 
 <p align="center">
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic1.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic13.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic2.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic3.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic4.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic5.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic6.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic7.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic14.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic8.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic9.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic10.png" >
   <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic11.png" >
+  <img src="https://github.com/debajyotiguha11/Hall-Booking/blob/master/img/pic12.png" >
+
 </p>
 
 ### Requirements
