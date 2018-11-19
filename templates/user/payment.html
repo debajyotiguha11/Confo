@@ -22,9 +22,9 @@
            <div class="form-group">
 
 
-              <label>Date From</label>
+              <label>Number of days:</label>
 
-              <input type="date" value="{{row.1}}" disabled>
+              <input type="text" value="{{row.1}}" disabled>
 
 
            </div>
@@ -79,7 +79,7 @@
 
               <label>Ammount</label>
 
-              <input type="text" value="{{row.5}}" disabled>
+              <input type="text" value="{{row.5*row.1}}" disabled>
 
 
            </div>
@@ -89,7 +89,7 @@
 
               <label>A/C No</label>
 
-              <input type="text" name="ac" placeholder="AC12345678">
+              <input type="text" name="ac" placeholder="AC12345678" required>
 
 
            </div>
@@ -99,7 +99,7 @@
 
               <label>CVV</label>
 
-              <input type="password" name="cvv" placeholder="***">
+              <input type="password" name="cvv" placeholder="***" required>
 
 
            </div>
@@ -109,7 +109,7 @@
 
               <label>PIN</label>
 
-              <input type="password" name="pin" placeholder="***">
+              <input type="password" name="pin" placeholder="***" required>
 
 
            </div>

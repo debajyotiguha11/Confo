@@ -42,8 +42,10 @@
 		<div class="btn-toolbar">
                     <a href="#" class="btn red" name="remove"><i class="material-icons">close</i></a>
 		</button>
-		{% else %}
+		{% elif row[8] == 0 %}
 <a href="/update/{{row.6}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.6}}">Edit</a>
+<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+		{% else %}
 <a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>{% endif %}
 {% if row[8] == 0  %}
 {% if row[5] == 0 %}

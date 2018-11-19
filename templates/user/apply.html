@@ -1,5 +1,19 @@
 {% include 'user/header.html' %}
 {% block body %}
+    <script type="text/javascript">
+        function GetDays(){
+                var dropdt = new Date(document.getElementById("drop_date").value);
+                var pickdt = new Date(document.getElementById("pick_date").value);
+                return parseInt((dropdt - pickdt) / (24 * 3600 * 1000))+1;
+        }
+
+        function cal(){
+        if(document.getElementById("drop_date")){
+            document.getElementById("numdays2").value=GetDays();
+        }  
+    }
+
+    </script>
   <main>
   <section class="content">
     <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Apply for a hall </h1></div>
@@ -26,7 +40,7 @@
 
               <label>Date From</label>
 
-              <input type="date" placeholder="2018-09-01" name="datef" required>
+              <input type="date" placeholder="2018-09-01" name="datef" id="pick_date"  onchange="cal()" required>
 
 
            </div>
@@ -37,12 +51,12 @@
 
               <label>Date To</label>
 
-              <input type="date" placeholder="2018-09-02" name="datet" required>
+              <input type="date" placeholder="2018-09-02" name="datet" id="drop_date"  onchange="cal()" required>
 
 
            </div>
 
-
+	<div id="numdays"><label class="form">Number of days:</label><input type="text" class="textbox" id="numdays2" name="numdays" disabled/></div>
 
            <div class="form-group">
 

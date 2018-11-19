@@ -43,6 +43,7 @@ def dash():
 
 @app.route('/register')
 def dash2():
+    session.clear()
     return render_template('register.html')
 
 
@@ -251,6 +252,7 @@ def userregister():
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
+    session.clear()
     return home()
 
 
@@ -365,7 +367,7 @@ def payment(id_data):
         return render_template('index.html')
     else:
         cur.execute(
-            "SELECT  name,datef,email,hname,comment,h.price,b.bid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s",
+            "SELECT  name,DATEDIFF ( datet ,datef ),email,hname,comment,h.price,b.bid FROM booking b,users u, hall h where b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s",
             (session['id'], id_data))
         data = cur.fetchall()
         return render_template('user/payment.html', result=data)
@@ -377,7 +379,7 @@ def paymentdetails(id_data):
         return render_template('index.html')
     else:
         cur.execute(
-            "select name,email,ph,h.hname,h.price,paydate,comment,ac FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s and b.bid=%s",
+            "select name,email,ph,h.hname,h.price,paydate,comment,ac,DATEDIFF ( datet ,datef ) FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s and b.bid=%s",
             (session['id'], id_data))
         data = cur.fetchall()
         return render_template('user/paymentdetails.html', result=data)
@@ -462,6 +464,7 @@ def remove(id_data):
     cur.execute("DELETE FROM users WHERE uid=%s", (id_data))
     db.commit()
     session['logged_in'] = False
+    session.clear()
     return redirect(url_for('index'))
 
 
