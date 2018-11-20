@@ -5,12 +5,20 @@ Description:  A Python-Flask app for booking seminar-hall and Live announcements
 The project requires so much of effort if you want to re-use it please mention the Authors in your project.
 """
 from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask_mail import Mail, Message
 import pymysql
 import hashlib
 from os import urandom
 
 app = Flask(__name__)
 app.secret_key = urandom(100)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'your@mai.com'
+app.config['MAIL_PASSWORD'] = 'mailPassword'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+mail = Mail(app)
 
 try:
     db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
@@ -70,6 +78,9 @@ def submit():
         cur.execute("INSERT INTO feedback (uid,hid,feedback,datef) values (%s, %s, %s, %s)",
                     (session['id'], hall, fk, datef))
         db.commit()
+        msg = Message('Feedback response from CONFO', sender='your@mai.com', recipients=[session['email']])
+        msg.body = "Your feedback has been recorded successfully. Thanks for your feedback :)"
+        mail.send(msg)
         return render_template('user/thanks.html')
 
 
@@ -246,6 +257,10 @@ def userregister():
                     (name, password, email, phone))
         flash(" user Registered Successfully")
         db.commit()
+        format_list = [name, email, p]
+        msg = Message('Welcome to CONFO', sender='your@mai.com', recipients=[email])
+        msg.body = "Hello {}, your email is '{}' and pass is '{}'. Thanks for joining us :)".format(*format_list)
+        mail.send(msg)
         return redirect(url_for('dash'))
 
 
@@ -333,6 +348,10 @@ def insert():
             (session['id'], datef, datet, hall, comment, 0,))
         # flash("Data Inserted Successfully")
         db.commit()
+        format_list = [session['username'], datef, datet, comment]
+        msg = Message('CONFO: Booking Confirmation', sender='your@mai.com', recipients=[session['email']])
+        msg.body = "Hello {}, Your booking has been recorded. dated from {} to {}, for {} :)".format(*format_list)
+        mail.send(msg)
         return redirect(url_for('index'))
 
 
@@ -412,6 +431,10 @@ def updateaccount():
             WHERE uid=%s
             """, (name, password, email, phone, id_data))
             # flash("Data Updated Successfully")
+            format_list = [name, email, p, phone]
+            msg = Message('Update from CONFO', sender='your@mai.com', recipients=[email])
+            msg.body = "Hello {}, your email is '{}' and pass is '{}' and phone number is {} :)".format(*format_list)
+            mail.send(msg)
             db.commit()
             session['logged_in'] = False
             return redirect(url_for('index'))
