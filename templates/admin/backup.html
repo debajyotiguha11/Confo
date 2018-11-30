@@ -2,70 +2,43 @@
 {% block body %}
     <main>
     <section class="content">
-      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Dashboard </h1></div>
+      <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Backup </h1></div>
 
-                <h3 class="center-align">Current Applications</h3>
+                <h3 class="center-align">Create Backup</h3>
                 <div class="custom-responsive">
                   <table class="striped hover centered">
-                    <thead><tr>
-                      <th>Username</th>
-                        <th>Date Requested</th>
-                      <th>Email</th>
-                      <th>Hall</th>
-                      <th>Comments</th>
-                      <th>Payment</th>
-		      <th>Accepted</th>
-                      <th>Action</th>
+                    <thead>
+		 <tr>
+                      <th>Booking ID</th>
+                        <th>Date From</th>
+                      <th>Date To</th>
+                      <th>Comment</th>
+                      <th>Accepted</th>
+                      <th>Hall Id</th>
+		      <th>User Id</th>
+                      <th>Payment Date</th>
+			<th>Paid</th>
+			<th>Account Number</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {% for row in applications %}
+                    {% for row in result %}
                 <tr>
                     <td>{{row.0}}</td>
                     <td>{{row.1}}</td>
                     <td>{{row.2}}</td>
                     <td>{{row.3}}</td>
                     <td>{{row.4}}</td>
-                    {% if row[8] == 1 %}
-                    <td><i class="text-green material-icons">check</i></td>
-                    {% else %}
-                    <td><i class="text-red material-icons">close</i></td>
-                    {% endif %}
-		    {% if row[5] == 0 %}
-        	    <td><i class="text-green material-icons">maximize</i></td>
-                    {% elif row[5] == 1 %}
-                    <td><i class="text-green material-icons">check</i></td>
-                    {% else %}
-                    <td><i class="text-red material-icons">close</i></td>
-                    {% endif %}
-                    <td>
-
-                <a href="/delete/{{ row.6 }}" class="btn btn-danger btn-xs" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
-
-                    </td>
-                </tr>
-               
-
-
-         <div class="modal-footer">
-
-
-            
-
-
-         </div>
-
-
-      </div>
-
-
-   </div>
-
-
-</div>
-                  {% endfor %}
+                    <td>{{row.5}}</td>
+                    <td>{{row.6}}</td>
+                    <td>{{row.10}}</td>
+                    <td>{{row.11}}</td>
+                    <td>{{row.12}}</td>
+		</tr>
+		{% endfor %}
                   </tbody>
                 </table>
+	<center><a href="#" id="save-link" class="btn btn-danger btn-xs">Download</a></center>
               </div>
             </div>
           </div>
@@ -76,6 +49,26 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
         <script>
+$('#save-link').click(function ()
+{
+  var retContent = [];
+  var retString = '';
+  $('tbody tr').each(function (idx, elem)
+  {
+    var elemText = [];
+    $(elem).children('td').each(function (childIdx, childElem)
+    {
+      elemText.push($(childElem).text());
+    });
+    retContent.push(`(${elemText.join(',')})`);
+  });
+  retString = retContent.join(',\r\n');
+	var file = new Blob([retString], {type: 'text/plain'});
+  var btn = $('#save-link');
+  btn.attr("href", URL.createObjectURL(file));
+  btn.prop("download", "data.csv");
+})
+
         // Hide sideNav
         $('.button-collapse').sideNav({
         menuWidth: 300, // Default is 300
@@ -95,3 +88,4 @@
 
         <script type="text/javascript" src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
         {% include 'admin/footer.html' %}
+

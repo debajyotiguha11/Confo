@@ -23,7 +23,7 @@
           </div>
           <a href="#!user"><img class="circle" src="/static/img/avatar5.png"></a>
           <a href="#!name"><span class="white-text name">Welcome back {{ session.username }}</span></a>
-<font color="white">Email: {{session.email}}</font>
+<font color="white">Email:{{session.email}}</font>
         </div>
       </li>
 
@@ -61,5 +61,6 @@
         </ul>
       </li>
 <li><a href="/edituser">Update Profile<i class="material-icons pink-item">person</i></a></li>
+<li><a href="/backup"><i class="material-icons pink-item">backup</i>Backup</a></li>
       <center><button type="button" onclick="window.location.href='{{ url_for( 'logout' ) }}';" class="waves-effect waves-teal btn-flat"><i class="material-icons right red-text">power_settings_new</i></button></center>
     </ul>

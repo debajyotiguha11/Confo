@@ -10,16 +10,20 @@ import pymysql
 import hashlib
 from os import urandom
 
+
+#Initialize the app and mail server to send mail
 app = Flask(__name__)
 app.secret_key = urandom(100)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'your@mai.com'
-app.config['MAIL_PASSWORD'] = 'mailPassword'
+app.config['MAIL_USERNAME'] = 'rboy36901@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Adgjmptw1#'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
+
+#Try to cunnect to the DB and handle error
 try:
     db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
     cur = db.cursor()
@@ -29,6 +33,7 @@ except:
     exit(0)
 
 
+#Root page after going to localhost(127.0.0.1)
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -55,6 +60,7 @@ def dash2():
     return render_template('register.html')
 
 
+#Fetching FeedBack for Admin
 @app.route('/feedback')
 def feedback():
     if not session.get('logged_in'):
@@ -67,6 +73,7 @@ def feedback():
     return render_template('user/feedback.html')
 
 
+#Getting User FeedBack
 @app.route('/submit', methods=['POST'])
 def submit():
     if not session.get('logged_in'):
@@ -78,12 +85,13 @@ def submit():
         cur.execute("INSERT INTO feedback (uid,hid,feedback,datef) values (%s, %s, %s, %s)",
                     (session['id'], hall, fk, datef))
         db.commit()
-        msg = Message('Feedback response from CONFO', sender='your@mai.com', recipients=[session['email']])
+        msg = Message('Feedback response from CONFO', sender='rboy36901@gmail.com', recipients=[session['email']])
         msg.body = "Your feedback has been recorded successfully. Thanks for your feedback :)"
         mail.send(msg)
         return render_template('user/thanks.html')
 
 
+#Search and Search Result
 @app.route('/search')
 def search():
     return render_template('user/search.html')
@@ -104,6 +112,7 @@ def result():
         return render_template('user/result.html', result=data)
 
 
+#Add New Announcements | view | edit
 @app.route('/addannoun')
 def addannoun():
     if not session.get('logged_in'):
@@ -152,37 +161,16 @@ def removeann(id_data):
     return redirect(url_for('viewannoun'))
 
 
+#Accept | Reject Booking
 @app.route('/approve')
 def approve():
     if not session.get('logged_in'):
         return render_template('index.html')
     if session.get('username') == 'admin':
         cur.execute(
-            "SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h,payment p where b.uid=u.uid and b.hid=h.hid and b.uid = p.uid and b.hid = p.hid and accepted = 0")
+            "SELECT  name,datef,datet,email,ph,hname,comment,accepted,bid,paid FROM booking b,users u, hall h,payment p where b.bid = p.pid and b.uid = p.uid and b.hid = p.hid and b.hid = h.hid and b.uid = u.uid and accepted = 0")
         data = cur.fetchall()
         return render_template('admin/approve.html', applications=data)
-
-
-@app.route('/edituser')
-def edituser():
-    if not session.get('logged_in'):
-        return render_template('index.html')
-    if session.get('username') == 'admin':
-        cur.execute("SELECT  * FROM admin")
-        data = cur.fetchall()
-        return render_template('admin/updateadmin.html', applications=data)
-    cur.execute("SELECT  * FROM users where uid=%s", (session['id']))
-    data = cur.fetchall()
-    return render_template('user/updateuser.html', applications=data)
-
-
-@app.route('/apply')
-def apply():
-    if not session.get('logged_in'):
-        return render_template('index.html')
-    cur.execute("SELECT  * FROM hall")
-    data = cur.fetchall()
-    return render_template('user/apply.html', result=data)
 
 
 @app.route('/accept/<string:id_data>', methods=['GET'])
@@ -205,6 +193,8 @@ def reject(id_data):
     return redirect(url_for('approve'))
 
 
+
+#Admin | User Login
 @app.route('/adminlogin', methods=['POST'])
 def do_admin_login():
     email = request.form['email']
@@ -243,6 +233,7 @@ def do_user_login():
     return home()
 
 
+#Registering New User
 @app.route('/userregister', methods=['POST'])
 def userregister():
     if session.get('logged_in'):
@@ -258,12 +249,75 @@ def userregister():
         flash(" user Registered Successfully")
         db.commit()
         format_list = [name, email, p]
-        msg = Message('Welcome to CONFO', sender='your@mai.com', recipients=[email])
+        msg = Message('Welcome to CONFO', sender='rboy36901@gmail.com', recipients=[email])
         msg.body = "Hello {}, your email is '{}' and pass is '{}'. Thanks for joining us :)".format(*format_list)
         mail.send(msg)
         return redirect(url_for('dash'))
 
 
+#Updating User
+@app.route('/edituser')
+def edituser():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if session.get('username') == 'admin':
+        cur.execute("SELECT  * FROM admin")
+        data = cur.fetchall()
+        return render_template('admin/updateadmin.html', applications=data)
+    cur.execute("SELECT  * FROM users where uid=%s", (session['id']))
+    data = cur.fetchall()
+    return render_template('user/updateuser.html', applications=data)
+
+
+@app.route('/updateaccount', methods=['POST', 'GET'])
+def updateaccount():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if request.method == 'POST':
+        id_data = session['id']
+        p = request.form['password']
+        password = hashlib.md5(p.encode()).hexdigest()
+        name = request.form['name']
+        email = request.form['email']
+        phone = request.form['phone']
+        if session.get('username') == 'admin':
+            cur.execute("""
+                UPDATE admin
+                SET   name=%s, pass=%s, email=%s, ph=%s
+                WHERE aid=%s
+                """, (name, password, email, phone, id_data))
+            db.commit()
+            session['logged_in'] = False
+            return redirect(url_for('index'))
+        else:
+            cur.execute("""
+            UPDATE users
+            SET  name=%s, pass=%s, email=%s, ph=%s
+            WHERE uid=%s
+            """, (name, password, email, phone, id_data))
+            # flash("Data Updated Successfully")
+            format_list = [name, email, p, phone]
+            msg = Message('Update from CONFO', sender='rboy36901@gmail.com', recipients=[email])
+            msg.body = "Hello {}, your email is '{}' and pass is '{}' and phone number is {} :)".format(*format_list)
+            mail.send(msg)
+            db.commit()
+            session['logged_in'] = False
+            return redirect(url_for('index'))
+
+
+#Delete User account
+@app.route('/remove/<string:id_data>', methods=['GET'])
+def remove(id_data):
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    cur.execute("DELETE FROM users WHERE uid=%s", (id_data))
+    db.commit()
+    session['logged_in'] = False
+    session.clear()
+    return redirect(url_for('index'))
+
+
+#Logging out
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
@@ -271,22 +325,23 @@ def logout():
     return home()
 
 
+#Dashboard 
 @app.route('/index')
 def index():
     if not session.get('logged_in'):
         return redirect('/')
     if session.get('username') == 'admin':
         cur.execute(
-            "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid")
+            "SELECT name,paydate,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.bid = p.pid and b.uid = p.uid and b.hid = p.hid and b.hid = h.hid and b.uid = u.uid ")
         data = cur.fetchall()
         return render_template('admin/index.html', applications=data)
     cur.execute(
-        "SELECT  name,datef,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s",
+        "SELECT name,paydate,email,hname,comment,accepted,bid,datet,paid FROM booking b,users u, hall h,payment p where b.bid = p.pid and b.uid = p.uid and b.hid = p.hid and b.hid = h.hid and b.uid = u.uid and b.uid=%s",
         (session['id']))
     data = cur.fetchall()
     return render_template('user/index.html', applications=data)
 
-
+#Adding | Deleting | Updating Halls
 @app.route('/addhall')
 def addhall():
     if not session.get('logged_in'):
@@ -334,6 +389,38 @@ def deletehall(id_data):
         return redirect(url_for('halls'))
 
 
+@app.route('/hallupdate', methods=['POST', 'GET'])
+def hallupdate():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if request.method == 'POST':
+        id_data = request.form['id_data']
+        name = request.form['name']
+        facility = request.form['facility']
+        capacity = request.form['capacity']
+        description = request.form['description']
+        price = request.form['price']
+        cur.execute("""
+               UPDATE hall
+               SET hname=%s, facility=%s, capacity=%s, description=%s, price=%s
+               WHERE hid=%s
+            """, (name, facility, capacity, description, price, id_data))
+        # flash("Data Updated Successfully")
+        db.commit()
+        return redirect(url_for('halls'))
+
+
+#Apply for a hall
+@app.route('/apply')
+def apply():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    cur.execute("SELECT  * FROM hall")
+    data = cur.fetchall()
+    return render_template('user/apply.html', result=data)
+
+
+#Booking Hall
 @app.route('/insert', methods=['POST'])
 def insert():
     if not session.get('logged_in'):
@@ -349,7 +436,7 @@ def insert():
         # flash("Data Inserted Successfully")
         db.commit()
         format_list = [session['username'], datef, datet, comment]
-        msg = Message('CONFO: Booking Confirmation', sender='your@mai.com', recipients=[session['email']])
+        msg = Message('CONFO: Booking Confirmation', sender='rboy36901@gmail.com', recipients=[session['email']])
         msg.body = "Hello {}, Your booking has been recorded. dated from {} to {}, for {} :)".format(*format_list)
         mail.send(msg)
         return redirect(url_for('index'))
@@ -365,6 +452,26 @@ def delete(id_data):
     return redirect(url_for('index'))
 
 
+@app.route('/update', methods=['POST', 'GET'])
+def update():
+    if not session.get('logged_in'):
+        return render_template('index.html')
+    if request.method == 'POST':
+        id_data = request.form['id_data']
+        datef = request.form['datef']
+        datet = request.form['datet']
+        comment = request.form['comment']
+        cur.execute("""
+               UPDATE booking
+               SET datef=%s, datet=%s, comment=%s
+               WHERE bid=%s
+            """, (datef, datet, comment, id_data))
+        # flash("Data Updated Successfully")
+        db.commit()
+        return redirect(url_for('index'))
+
+
+#Payment for the Booking
 @app.route('/pay', methods=['POST'])
 def pay():
     if not session.get('logged_in'):
@@ -398,99 +505,23 @@ def paymentdetails(id_data):
         return render_template('index.html')
     else:
         cur.execute(
-            "select name,email,ph,h.hname,h.price,paydate,comment,ac,DATEDIFF ( datet ,datef )+1 FROM booking b,users u, hall h,payment p where b.hid = h.hid and b.uid = u.uid and b.uid = p.uid and b.hid = p.hid and b.uid=%s and b.bid=%s",
+            "select name,email,ph,h.hname,h.price,paydate,comment,ac,DATEDIFF ( datet ,datef )+1 FROM booking b,users u, hall h,payment p where b.bid = p.pid and b.uid = p.uid and b.hid = p.hid and b.hid = h.hid and b.uid = u.uid and b.uid=%s and b.bid=%s",
             (session['id'], id_data))
         data = cur.fetchall()
         return render_template('user/paymentdetails.html', result=data)
 
 
-@app.route('/updateaccount', methods=['POST', 'GET'])
-def updateaccount():
+@app.route('/backup/')
+def backup():
     if not session.get('logged_in'):
         return render_template('index.html')
-    if request.method == 'POST':
-        id_data = session['id']
-        p = request.form['password']
-        password = hashlib.md5(p.encode()).hexdigest()
-        name = request.form['name']
-        email = request.form['email']
-        phone = request.form['phone']
-        if session.get('username') == 'admin':
-            cur.execute("""
-                UPDATE admin
-                SET   name=%s, pass=%s, email=%s, ph=%s
-                WHERE aid=%s
-                """, (name, password, email, phone, id_data))
-            db.commit()
-            session['logged_in'] = False
-            return redirect(url_for('index'))
-        else:
-            cur.execute("""
-            UPDATE users
-            SET  name=%s, pass=%s, email=%s, ph=%s
-            WHERE uid=%s
-            """, (name, password, email, phone, id_data))
-            # flash("Data Updated Successfully")
-            format_list = [name, email, p, phone]
-            msg = Message('Update from CONFO', sender='your@mai.com', recipients=[email])
-            msg.body = "Hello {}, your email is '{}' and pass is '{}' and phone number is {} :)".format(*format_list)
-            mail.send(msg)
-            db.commit()
-            session['logged_in'] = False
-            return redirect(url_for('index'))
+    if session.get('username') == 'admin':
+        cur.execute("call backup()")
+        data = cur.fetchall()
+        return render_template('admin/backup.html', result=data)
 
 
-@app.route('/update', methods=['POST', 'GET'])
-def update():
-    if not session.get('logged_in'):
-        return render_template('index.html')
-    if request.method == 'POST':
-        id_data = request.form['id_data']
-        datef = request.form['datef']
-        datet = request.form['datet']
-        comment = request.form['comment']
-        cur.execute("""
-               UPDATE booking
-               SET datef=%s, datet=%s, comment=%s
-               WHERE bid=%s
-            """, (datef, datet, comment, id_data))
-        # flash("Data Updated Successfully")
-        db.commit()
-        return redirect(url_for('index'))
-
-
-@app.route('/hallupdate', methods=['POST', 'GET'])
-def hallupdate():
-    if not session.get('logged_in'):
-        return render_template('index.html')
-    if request.method == 'POST':
-        id_data = request.form['id_data']
-        name = request.form['name']
-        facility = request.form['facility']
-        capacity = request.form['capacity']
-        description = request.form['description']
-        price = request.form['price']
-        cur.execute("""
-               UPDATE hall
-               SET hname=%s, facility=%s, capacity=%s, description=%s, price=%s
-               WHERE hid=%s
-            """, (name, facility, capacity, description, price, id_data))
-        # flash("Data Updated Successfully")
-        db.commit()
-        return redirect(url_for('halls'))
-
-
-@app.route('/remove/<string:id_data>', methods=['GET'])
-def remove(id_data):
-    if not session.get('logged_in'):
-        return render_template('index.html')
-    cur.execute("DELETE FROM users WHERE uid=%s", (id_data))
-    db.commit()
-    session['logged_in'] = False
-    session.clear()
-    return redirect(url_for('index'))
-
-
+#Handeling HTTP errors
 @app.errorhandler(400)
 def bad_request(error):
     return render_template('errors/400.html', title='Bad Request'), 400

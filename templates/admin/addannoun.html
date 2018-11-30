@@ -1,5 +1,12 @@
 {% include 'admin/header.html' %}
 {% block body %}
+<script>
+function cal(){
+	var today = new Date().toISOString().split('T')[0];
+	document.getElementsByName("date")[0].setAttribute('min', today);
+	
+}
+</script>
     <main>
     <section class="content">
       <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Add Announcement </h1></div>
@@ -25,7 +32,7 @@
               <label for="text">Date: </label>
               <div class="input-field col s12">
 
-                <input type="date" name="date" />
+                <input type="date" name="date" onclick="cal()" required />
               </div>
             </div>
             <div class="row">

@@ -9,6 +9,9 @@
 
         function cal(){
         if(document.getElementById("drop_date")){
+		var today = new Date().toISOString().split('T')[0];
+	document.getElementsByName("datef")[0].setAttribute('min', today);
+	document.getElementsByName("datet")[0].setAttribute('min', today);
             document.getElementById("numdays2").value=GetDays();
         }  
     }
@@ -40,7 +43,7 @@
 
               <label>Date From</label>
 
-              <input type="date" placeholder="2018-09-01" name="datef" id="pick_date"  onchange="cal()" required>
+              <input type="date" placeholder="2018-09-01" name="datef" id="pick_date"  onclick="cal()" required>
 
 
            </div>

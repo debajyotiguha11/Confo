@@ -1,5 +1,13 @@
 {% include 'user/header.html' %}
 {% block body %}
+<script>
+function getDate(){
+var today = new Date().toISOString().split('T')[0];
+document.getElementsByName("datef")[0].setAttribute('min', today);
+document.getElementsByName("datef")[0].setAttribute('max', today);
+
+}
+</script>
 <main>
     <section class="content">
       <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Feedback </h1></div>
@@ -26,8 +34,7 @@
 
 
               <label>Date</label>
-
-              <input type="date" placeholder="2018-09-01" name="datef" required>
+              <input type="date" onclick="getDate()" name="datef" id="date" required>
 
 
            </div>
