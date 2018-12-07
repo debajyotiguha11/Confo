@@ -83,7 +83,7 @@ def submit():
         cur.execute("INSERT INTO feedback (uid,hid,feedback,datef) values (%s, %s, %s, %s)",
                     (session['id'], hall, fk, datef))
         db.commit()
-        msg = Message('Feedback response from CONFO', sender='rboy36901@gmail.com', recipients=[session['email']])
+        msg = Message('Feedback response from CONFO', sender='yourmail@gmail.com', recipients=[session['email']])
         msg.body = "Your feedback has been recorded successfully. Thanks for your feedback :)"
         mail.send(msg)
         return render_template('user/thanks.html')
@@ -246,7 +246,7 @@ def userregister():
         flash(" user Registered Successfully")
         db.commit()
         format_list = [name, email, p]
-        msg = Message('Welcome to CONFO', sender='rboy36901@gmail.com', recipients=[email])
+        msg = Message('Welcome to CONFO', sender='yourmail@gmail.com', recipients=[email])
         msg.body = "Hello {}, your email is '{}' and pass is '{}'. Thanks for joining us :)".format(*format_list)
         mail.send(msg)
         return redirect(url_for('dash'))
@@ -294,7 +294,7 @@ def updateaccount():
             """, (name, password, email, phone, id_data))
             # flash("Data Updated Successfully")
             format_list = [name, email, p, phone]
-            msg = Message('Update from CONFO', sender='rboy36901@gmail.com', recipients=[email])
+            msg = Message('Update from CONFO', sender='yourmail@gmail.com', recipients=[email])
             msg.body = "Hello {}, your email is '{}' and pass is '{}' and phone number is {} :)".format(*format_list)
             mail.send(msg)
             db.commit()
@@ -434,7 +434,7 @@ def insert():
         # flash("Data Inserted Successfully")
         db.commit()
         format_list = [session['username'], datef, datet, comment]
-        msg = Message('CONFO: Booking Confirmation', sender='rboy36901@gmail.com', recipients=[session['email']])
+        msg = Message('CONFO: Booking Confirmation', sender='yourmail@gmail.com', recipients=[session['email']])
         msg.body = "Hello {}, Your booking has been recorded. dated from {} to {}, for {} :)".format(*format_list)
         mail.send(msg)
         return redirect(url_for('index'))
