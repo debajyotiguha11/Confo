@@ -1,5 +1,12 @@
 {% include 'user/header.html' %}
 {% block body %}
+<script type="text/javascript">
+        function cal(){
+        var today = new Date().toISOString().split('T')[0];
+	document.getElementsByName("datef")[0].setAttribute('min', today);
+	document.getElementsByName("datet")[0].setAttribute('min', today);
+        }
+</script>
 <main>
     <section class="content">
       <div class="page-announce valign-wrapper"><a href="#" data-activates="slide-out" class="button-collapse valign hide-on-large-only"><i class="material-icons">menu</i></a><h1 class="page-announce-text valign">// Search Halls </h1></div>
@@ -12,7 +19,7 @@
           <div class="row" >
                <label>For How Many People</label>
             <p>
-              <input type="radio" name="hall" value="50" id="1"/>
+              <input type="radio" name="hall" value="50"  id="1"/>
               <label for="1">>50</label>
             </p>
             <p>
@@ -36,7 +43,7 @@
 
               <label>Date From</label>
 
-              <input type="date" placeholder="2018-09-01" name="datef" required>
+              <input type="date" onclick="cal()" placeholder="2018-09-01" name="datef" required>
 
 
            </div>
@@ -47,7 +54,7 @@
 
               <label>Date To</label>
 
-              <input type="date" placeholder="2018-09-02" name="datet" required>
+              <input type="date" onclick="cal()" placeholder="2018-09-02" name="datet" required>
 
 
            </div>

@@ -10,8 +10,7 @@ import pymysql
 import hashlib
 from os import urandom
 
-
-#Initialize the app and mail server to send mail
+# Initialize the app and mail server to send mail
 app = Flask(__name__)
 app.secret_key = urandom(100)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -22,8 +21,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
-
-#Try to cunnect to the DB and handle error
+# Try to connect to the DB and handle error
 try:
     db = pymysql.connect(host="localhost", user="root", passwd="", db="seminar")
     cur = db.cursor()
@@ -33,7 +31,7 @@ except:
     exit(0)
 
 
-#Root page after going to localhost(127.0.0.1)
+# Root page after going to localhost(127.0.0.1)
 @app.route('/')
 def home():
     if not session.get('logged_in'):
@@ -60,7 +58,7 @@ def dash2():
     return render_template('register.html')
 
 
-#Fetching FeedBack for Admin
+# Fetching FeedBack for Admin
 @app.route('/feedback')
 def feedback():
     if not session.get('logged_in'):
@@ -73,7 +71,7 @@ def feedback():
     return render_template('user/feedback.html')
 
 
-#Getting User FeedBack
+# Getting User FeedBack
 @app.route('/submit', methods=['POST'])
 def submit():
     if not session.get('logged_in'):
@@ -91,7 +89,7 @@ def submit():
         return render_template('user/thanks.html')
 
 
-#Search and Search Result
+# Search and Search Result
 @app.route('/search')
 def search():
     return render_template('user/search.html')
@@ -112,7 +110,7 @@ def result():
         return render_template('user/result.html', result=data)
 
 
-#Add New Announcements | view | edit
+# Add New Announcements | view | edit
 @app.route('/addannoun')
 def addannoun():
     if not session.get('logged_in'):
@@ -161,7 +159,7 @@ def removeann(id_data):
     return redirect(url_for('viewannoun'))
 
 
-#Accept | Reject Booking
+# Accept | Reject Booking
 @app.route('/approve')
 def approve():
     if not session.get('logged_in'):
@@ -193,8 +191,7 @@ def reject(id_data):
     return redirect(url_for('approve'))
 
 
-
-#Admin | User Login
+# Admin | User Login
 @app.route('/adminlogin', methods=['POST'])
 def do_admin_login():
     email = request.form['email']
@@ -233,7 +230,7 @@ def do_user_login():
     return home()
 
 
-#Registering New User
+# Registering New User
 @app.route('/userregister', methods=['POST'])
 def userregister():
     if session.get('logged_in'):
@@ -255,7 +252,7 @@ def userregister():
         return redirect(url_for('dash'))
 
 
-#Updating User
+# Updating User
 @app.route('/edituser')
 def edituser():
     if not session.get('logged_in'):
@@ -305,7 +302,7 @@ def updateaccount():
             return redirect(url_for('index'))
 
 
-#Delete User account
+# Delete User account
 @app.route('/remove/<string:id_data>', methods=['GET'])
 def remove(id_data):
     if not session.get('logged_in'):
@@ -317,7 +314,7 @@ def remove(id_data):
     return redirect(url_for('index'))
 
 
-#Logging out
+# Logging out
 @app.route("/logout")
 def logout():
     session['logged_in'] = False
@@ -325,7 +322,7 @@ def logout():
     return home()
 
 
-#Dashboard 
+# Dashboard
 @app.route('/index')
 def index():
     if not session.get('logged_in'):
@@ -341,7 +338,8 @@ def index():
     data = cur.fetchall()
     return render_template('user/index.html', applications=data)
 
-#Adding | Deleting | Updating Halls
+
+# Adding | Deleting | Updating Halls
 @app.route('/addhall')
 def addhall():
     if not session.get('logged_in'):
@@ -410,7 +408,7 @@ def hallupdate():
         return redirect(url_for('halls'))
 
 
-#Apply for a hall
+# Apply for a hall
 @app.route('/apply')
 def apply():
     if not session.get('logged_in'):
@@ -420,7 +418,7 @@ def apply():
     return render_template('user/apply.html', result=data)
 
 
-#Booking Hall
+# Booking Hall
 @app.route('/insert', methods=['POST'])
 def insert():
     if not session.get('logged_in'):
@@ -471,7 +469,7 @@ def update():
         return redirect(url_for('index'))
 
 
-#Payment for the Booking
+# Payment for the Booking
 @app.route('/pay', methods=['POST'])
 def pay():
     if not session.get('logged_in'):
@@ -521,7 +519,7 @@ def backup():
         return render_template('admin/backup.html', result=data)
 
 
-#Handeling HTTP errors
+# Handeling HTTP errors
 @app.errorhandler(400)
 def bad_request(error):
     return render_template('errors/400.html', title='Bad Request'), 400
