@@ -39,12 +39,17 @@ username: admin@admin.com & Password: admin
 
 1. Clone and navigate to Hall-Booking directory.
 
-2. Run the python script.
+2. Run the Server (XAMPP/LAMPP).<br>
+   for linux goto lampp directory and do-
+    ```bash
+    sudo ./xampp start
+    ```
+3. Run the python script.
     ```bash
     python3 __init__.py
     ```
-3. You're all done :)
-4. To quit ctrl+c.
+4. You're all done :)
+5. To quit ctrl+c.
 
 ## Contribute
 
