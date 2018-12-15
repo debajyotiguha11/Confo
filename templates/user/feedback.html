@@ -42,42 +42,12 @@ document.getElementsByName("datef")[0].setAttribute('max', today);
 
            <div class="row" >
                <label>Hall</label>
+{% for row in result %}
             <p>
-              <input type="radio" name="hall" value="1" id="1"/>
-              <label for="1">Seminar Hall 1</label>
+              <input type="radio" name="hall" value="{{row.0}}" id="{{row.0}}"/>
+              <label for="{{row.0}}">{{row.1}}</label>
             </p>
-            <p>
-              <input type="radio" name="hall" value="2" id="2"/>
-              <label for="2">Seminar Hall 2</label>
-            </p>
-            <p>
-              <input type="radio" name="hall" value="3" id="3"/>
-              <label for="3">Seminar Hall 3</label>
-            </p>
-            <p>
-              <input type="radio" name="hall" value="4" id="4"/>
-              <label for="4">Seminar Hall 4</label>
-            </p>
-            <p>
-              <input type="radio" name="hall" value="5" id="5"/>
-              <label for="5">Seminar Hall 5</label>
-            </p>
-            <p>
-              <input type="radio" name="hall" value="6" id="6"/>
-              <label for="6">Seminar Hall 6</label>
-            </p>
-            <p>
-              <input type="radio" name="hall" value="7" id="7"/>
-              <label for="7">Rajlaxmi Seminar Hall</label>
-            </p>
-            <p>
-              <input type="radio" name="hall" value="8" id="8"/>
-              <label for="8">Auditorium</label>
-            </p>
-	    <p>
-              <input type="radio" name="hall" value="9" id="9"/>
-              <label for="9">Conference Hall</label>
-            </p>
+{% endfor %}
           </div>
 
 

@@ -15,8 +15,8 @@ app = Flask(__name__)
 app.secret_key = urandom(100)
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'yourmail@gmail.com'
-app.config['MAIL_PASSWORD'] = 'password'
+app.config['MAIL_USERNAME'] = 'rboy36901@gmail.com'
+app.config['MAIL_PASSWORD'] = 'Adgjmptw1#'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -68,7 +68,9 @@ def feedback():
             "SELECT  u.name,f.datef,u.email,h.hname,feedback FROM feedback f, users u, hall h where f.uid = u.uid and f.hid = h.hid order by f.datef DESC")
         data = cur.fetchall()
         return render_template('admin/feedbacks.html', result=data)
-    return render_template('user/feedback.html')
+    cur.execute("select * from hall")
+    data = cur.fetchall()
+    return render_template('user/feedback.html', result=data)
 
 
 # Getting User FeedBack
@@ -83,7 +85,7 @@ def submit():
         cur.execute("INSERT INTO feedback (uid,hid,feedback,datef) values (%s, %s, %s, %s)",
                     (session['id'], hall, fk, datef))
         db.commit()
-        msg = Message('Feedback response from CONFO', sender='yourmail@gmail.com', recipients=[session['email']])
+        msg = Message('Feedback response from CONFO', sender='rboy36901@gmail.com', recipients=[session['email']])
         msg.body = "Your feedback has been recorded successfully. Thanks for your feedback :)"
         mail.send(msg)
         return render_template('user/thanks.html')
@@ -246,7 +248,7 @@ def userregister():
         flash(" user Registered Successfully")
         db.commit()
         format_list = [name, email, p]
-        msg = Message('Welcome to CONFO', sender='yourmail@gmail.com', recipients=[email])
+        msg = Message('Welcome to CONFO', sender='rboy36901@gmail.com', recipients=[email])
         msg.body = "Hello {}, your email is '{}' and pass is '{}'. Thanks for joining us :)".format(*format_list)
         mail.send(msg)
         return redirect(url_for('dash'))
@@ -280,9 +282,9 @@ def updateaccount():
         if session.get('username') == 'admin':
             cur.execute("""
                 UPDATE admin
-                SET   name=%s, pass=%s, email=%s, ph=%s
+                SET  pass=%s, email=%s, ph=%s
                 WHERE aid=%s
-                """, (name, password, email, phone, id_data))
+                """, (password, email, phone, id_data))
             db.commit()
             session['logged_in'] = False
             return redirect(url_for('index'))
@@ -294,7 +296,7 @@ def updateaccount():
             """, (name, password, email, phone, id_data))
             # flash("Data Updated Successfully")
             format_list = [name, email, p, phone]
-            msg = Message('Update from CONFO', sender='yourmail@gmail.com', recipients=[email])
+            msg = Message('Update from CONFO', sender='rboy36901@gmail.com', recipients=[email])
             msg.body = "Hello {}, your email is '{}' and pass is '{}' and phone number is {} :)".format(*format_list)
             mail.send(msg)
             db.commit()
@@ -434,7 +436,7 @@ def insert():
         # flash("Data Inserted Successfully")
         db.commit()
         format_list = [session['username'], datef, datet, comment]
-        msg = Message('CONFO: Booking Confirmation', sender='yourmail@gmail.com', recipients=[session['email']])
+        msg = Message('CONFO: Booking Confirmation', sender='rboy36901@gmail.com', recipients=[session['email']])
         msg.body = "Hello {}, Your booking has been recorded. dated from {} to {}, for {} :)".format(*format_list)
         mail.send(msg)
         return redirect(url_for('index'))
@@ -456,14 +458,14 @@ def update():
         return render_template('index.html')
     if request.method == 'POST':
         id_data = request.form['id_data']
-        datef = request.form['datef']
-        datet = request.form['datet']
+        #datef = request.form['datef']
+        #datet = request.form['datet']
         comment = request.form['comment']
         cur.execute("""
                UPDATE booking
-               SET datef=%s, datet=%s, comment=%s
+               SET comment=%s
                WHERE bid=%s
-            """, (datef, datet, comment, id_data))
+            """, (comment, id_data))
         # flash("Data Updated Successfully")
         db.commit()
         return redirect(url_for('index'))

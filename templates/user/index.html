@@ -44,9 +44,9 @@
 		</button>
 		{% elif row[8] == 0 %}
 <a href="/update/{{row.6}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaledit{{row.6}}">Edit</a>
-<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>
+<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Cancel?')">Cancel</a>
 		{% else %}
-<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Delete?')">Delete</a>{% endif %}
+<a href="/delete/{{ row.6 }}" class="btn btn btn-danger" onclick="return confirm('Are You Sure For Cancel?')">Cancel</a>{% endif %}
 {% if row[8] == 0  %}
 {% if row[5] == 0 %}
 <a href="/payment/{{ row.6 }}" class="btn btn-warning btn-xs">Payment</a>
@@ -118,7 +118,7 @@
 
                  <label>Date From</label>
 
-                 <input type="date" placeholder="2018-09-01 14:45:00" name="datef" value="{{ row.1}}" required>
+                 <input type="date" placeholder="2018-09-01 14:45:00" name="datef" value="{{ row.1}}" disabled>
 
 
               </div>
@@ -129,7 +129,7 @@
 
                  <label>Date To</label>
 
-                 <input type="date" placeholder="2018-09-02" name="datet" value="{{ row.7}}" >
+                 <input type="date" placeholder="2018-09-02" name="datet" value="{{ row.7}}" disabled>
 
 
               </div>
