@@ -4,12 +4,12 @@ A Python-Flask app for booking seminar-hall and Live announcements.
 ### LIVE DEMO: https://debajyotiguha11.pythonanywhere.com/ 
 
 ## ADMIN Login
-username: admin & Password: admin
+username: admin@admin.com & Password: admin
 
 ## User Login
-1. Username: user & Password: user
-2. Username: user1 & Password: user1
-3. Username: user2 & Password: user2
+1. Username: user@user.com & Password: user
+2. Username: user1@user.com & Password: user1
+3. Username: user2@user.com & Password: user2
 
 
 <p align="center">
